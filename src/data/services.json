@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "title": "Web Development",
+        "description": "Building high-performance, responsive websites with modern technologies."
+    },
+    {
+        "id": 2,
+        "title": "Mobile Apps",
+        "description": "Native and cross-platform mobile applications for iOS and Android."
+    },
+    {
+        "id": 3,
+        "title": "UI/UX Design",
+        "description": "Creating intuitive and beautiful user interfaces that drive engagement."
+    }
+]
