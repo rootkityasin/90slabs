@@ -2,12 +2,19 @@
 
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 
 export default function Hero() {
-    const comp = useRef(null)
+    const comp = useRef<HTMLDivElement | null>(null)
+    const bgTextRef = useRef<HTMLDivElement | null>(null)
+    const fgTextRef = useRef<HTMLDivElement | null>(null)
+
+    const lerp = (start: number, end: number, amt: number) => start + (end - start) * amt
 
     useLayoutEffect(() => {
+        gsap.registerPlugin(ScrollTrigger)
+
         const ctx = gsap.context(() => {
             const tl = gsap.timeline()
 
@@ -37,39 +44,100 @@ export default function Hero() {
                     duration: 1.5,
                     ease: 'elastic.out(1, 0.5)',
                 }, '-=1.2')
+                .from('.hero-x', {
+                    scale: 0.95,
+                    opacity: 0,
+                    duration: 1,
+                    ease: 'power3.out',
+                }, '-=1')
+
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: comp.current,
+                    start: 'top top',
+                    end: 'bottom+=120% top',
+                    scrub: 0.6,
+                },
+            })
+                .to(bgTextRef.current, {
+                    scale: 1.08,
+                    rotation: -6,
+                    filter: 'blur(2px) brightness(0.92)',
+                    ease: 'none',
+                }, 0)
+                .to(fgTextRef.current, {
+                    scale: 1.16,
+                    rotation: 9,
+                    letterSpacing: '-0.08em',
+                    ease: 'none',
+                }, 0)
+                .to('.hero-desc', {
+                    y: -20,
+                    opacity: 0.92,
+                    ease: 'none',
+                }, 0)
+                .to('.hero-btn', {
+                    y: -10,
+                }, 0)
 
         }, comp)
 
-        return () => ctx.revert()
+        let rafId = 0
+        let bgY = 0
+        let fgY = 0
+
+        const update = () => {
+            const scrollY = window.scrollY || 0
+            const targetBg = scrollY * 0.08
+            const targetFg = scrollY * 0.16
+
+            bgY = lerp(bgY, targetBg, 0.08)
+            fgY = lerp(fgY, targetFg, 0.12)
+
+            if (bgTextRef.current) gsap.set(bgTextRef.current, { y: bgY })
+            if (fgTextRef.current) gsap.set(fgTextRef.current, { y: fgY })
+
+            rafId = requestAnimationFrame(update)
+        }
+
+        rafId = requestAnimationFrame(update)
+
+        return () => {
+            ctx.revert()
+            cancelAnimationFrame(rafId)
+        }
     }, [])
 
     return (
-        <section ref={comp} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 selection:bg-blue-500/30 selection:text-white">
-            {/* Subtle Aurora Background - Apple Style */}
+        <section ref={comp} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32 selection:bg-blue-500/30 selection:text-white">
             <div className="aurora-bg"></div>
+            <div className="hero-vignette" aria-hidden></div>
+            <div className="hero-noise" aria-hidden></div>
+
+            <div className="absolute inset-0 overflow-hidden" aria-hidden>
+                <div ref={bgTextRef} className="hero-bg-text">90&apos;s</div>
+                <div ref={fgTextRef} className="hero-fg-text hero-x">X</div>
+            </div>
 
             <div className="container px-4 md:px-6 relative z-10 flex flex-col items-center">
-
-                {/* Badge */}
                 <div className="mb-10 opacity-0 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
                     <div className="glass px-4 py-1.5 rounded-full text-[10px] md:text-xs font-semibold tracking-wide uppercase text-gray-300 border border-white/10 flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                        Introducing 90sX
+                        Crafted for the 90&apos;s X
                     </div>
                 </div>
 
                 <h1 className="text-5xl md:text-8xl lg:text-[7rem] font-semibold tracking-tight mb-8 text-center leading-[1] max-w-5xl mx-auto">
                     <div className="overflow-hidden">
-                        <span className="hero-text-1 block bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent pb-4">Precision in</span>
+                        <span className="hero-text-1 block bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent pb-4">Silver future,</span>
                     </div>
                     <div className="overflow-hidden">
-                        <span className="hero-text-1 block bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent pb-4">Every Pixel.</span>
+                        <span className="hero-text-1 block bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent pb-4">born in the 90&apos;s.</span>
                     </div>
                 </h1>
 
                 <p className="hero-desc text-xl md:text-3xl text-gray-400 max-w-2xl mx-auto mb-14 leading-relaxed text-center font-normal tracking-wide">
-                    We craft digital experiences that feel inevitable. <br className="hidden md:block" />
-                    Simple. Powerful. Timeless.
+                    A cinematic hero with layered parallax: the 90s behind, the X upfront. Subtle delay keeps the motion silky as you scroll.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
