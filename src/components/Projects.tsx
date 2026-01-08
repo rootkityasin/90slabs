@@ -1,7 +1,6 @@
 'use client'
 
-import projectsData from '@/data/projects.json'
-import { useRef, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
@@ -9,8 +8,53 @@ import { ArrowUpRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
+interface Project {
+    id: number
+    title: string
+    category: string
+    image: string
+    year: string
+    description: string
+    tech?: string[]
+}
+
 export default function Projects() {
     const container = useRef<HTMLDivElement>(null)
+    const [projects, setProjects] = useState<Project[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/projects')
+                if (response.ok) {
+                    const result = await response.json()
+                    setProjects(result)
+                }
+            } catch (error) {
+                console.error('Error fetching projects:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [])
+
+    if (loading) {
+        return (
+            <section id="projects" className="py-32 relative bg-[#001210] overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex items-center justify-center min-h-[400px]">
+                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (projects.length === 0) {
+        return null
+    }
 
     return (
         <section id="projects" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
@@ -30,7 +74,7 @@ export default function Projects() {
                 </div>
 
                 <div className="space-y-32">
-                    {projectsData.map((project, index) => (
+                    {projects.map((project, index) => (
                         <div key={project.id} className={`project-card flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center`}>
                             {/* Project Image */}
                             <div className="w-full lg:w-3/5 group relative">

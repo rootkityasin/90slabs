@@ -1,15 +1,70 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+interface AboutData {
+    label: string
+    title: string
+    titleHighlight: string
+    paragraphs: string[]
+    graphicText: string
+    graphicSubtext: string
+}
+
 export default function About() {
     const container = useRef(null)
+    const [data, setData] = useState<AboutData | null>(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/about')
+                if (response.ok) {
+                    const result = await response.json()
+                    setData(result)
+                } else {
+                    // Fallback to default content
+                    setData({
+                        label: "Who We Are",
+                        title: "Digital",
+                        titleHighlight: "Alchemists",
+                        paragraphs: [
+                            "At 90sX, we believe in the power of <span class=\"text-white font-medium\">nostalgia fused with futurism</span>. We don't just build websites; we construct digital realities that defy convention and elevate user experience to art.",
+                            "Born from a passion for the 90s aesthetic and modern engineering, our team delivers software that is both robust and visually stunning."
+                        ],
+                        graphicText: "90sX",
+                        graphicSubtext: "Agency"
+                    })
+                }
+            } catch (error) {
+                console.error('Error fetching about:', error)
+                // Fallback to default content
+                setData({
+                    label: "Who We Are",
+                    title: "Digital",
+                    titleHighlight: "Alchemists",
+                    paragraphs: [
+                        "At 90sX, we believe in the power of <span class=\"text-white font-medium\">nostalgia fused with futurism</span>. We don't just build websites; we construct digital realities that defy convention and elevate user experience to art.",
+                        "Born from a passion for the 90s aesthetic and modern engineering, our team delivers software that is both robust and visually stunning."
+                    ],
+                    graphicText: "90sX",
+                    graphicSubtext: "Agency"
+                })
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        if (!data || loading) return
+
         const ctx = gsap.context(() => {
             gsap.from('.about-text', {
                 scrollTrigger: {
@@ -26,7 +81,23 @@ export default function About() {
         }, container)
 
         return () => ctx.revert()
-    }, [])
+    }, [data, loading])
+
+    if (loading) {
+        return (
+            <section id="about" className="py-32 relative bg-[#001210] overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex items-center justify-center min-h-[400px]">
+                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (!data) {
+        return null
+    }
 
     return (
         <section id="about" ref={container} className="py-32 relative bg-[#001210] selection:bg-[#008f7d]/30 overflow-hidden">
@@ -36,19 +107,16 @@ export default function About() {
 
                 <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
                     <div className="order-2 md:order-1">
-                        <span className="about-text text-[#FFF4B7] font-mono text-sm tracking-widest uppercase mb-6 block drop-shadow-[0_0_10px_rgba(255,244,183,0.3)]">Who We Are</span>
+                        <span className="about-text text-[#FFF4B7] font-mono text-sm tracking-widest uppercase mb-6 block drop-shadow-[0_0_10px_rgba(255,244,183,0.3)]">{data.label}</span>
                         <h2 className="about-text text-5xl md:text-7xl font-bold mb-8 text-white leading-tight drop-shadow-[0_0_15px_rgba(0,18,16,0.5)]">
-                            Digital <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#FFF4B7]">Alchemists</span>
+                            {data.title} <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#FFF4B7]">{data.titleHighlight}</span>
                         </h2>
 
                         <div className="about-text space-y-6 text-lg md:text-xl text-[#FFF4B7]/70 font-light leading-relaxed">
-                            <p>
-                                At 90sX, we believe in the power of <span className="text-white font-medium">nostalgia fused with futurism</span>. We don't just build websites; we construct digital realities that defy convention and elevate user experience to art.
-                            </p>
-                            <p>
-                                Born from a passion for the 90s aesthetic and modern engineering, our team delivers software that is both robust and visually stunning.
-                            </p>
+                            {data.paragraphs.map((paragraph, index) => (
+                                <p key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
+                            ))}
                         </div>
                     </div>
 
@@ -59,8 +127,8 @@ export default function About() {
 
                             {/* Graphic / Typography Art */}
                             <div className="text-center relative z-10 mix-blend-difference">
-                                <div className="text-8xl md:text-[10rem] font-black text-white tracking-tighter opacity-10 select-none">90sX</div>
-                                <div className="text-xl md:text-3xl font-bold text-[#FFF4B7] tracking-[1em] uppercase absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center drop-shadow-[0_0_10px_rgba(255,244,183,0.2)]">Agency</div>
+                                <div className="text-8xl md:text-[10rem] font-black text-white tracking-tighter opacity-10 select-none">{data.graphicText}</div>
+                                <div className="text-xl md:text-3xl font-bold text-[#FFF4B7] tracking-[1em] uppercase absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center drop-shadow-[0_0_10px_rgba(255,244,183,0.2)]">{data.graphicSubtext}</div>
                             </div>
                         </div>
                     </div>

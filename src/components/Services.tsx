@@ -1,7 +1,6 @@
 'use client'
 
-import servicesData from '@/data/services.json'
-import { useRef, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -35,10 +34,16 @@ interface Category {
     services: Service[]
 }
 
+interface ServicesData {
+    categories: Category[]
+}
+
 export default function Services() {
     const container = useRef(null)
+    const [data, setData] = useState<ServicesData | null>(null)
+    const [loading, setLoading] = useState(true)
 
-    const iconMap: { [key: string]: any } = {
+    const iconMap: { [key: string]: React.ComponentType<{ className?: string; strokeWidth?: number }> } = {
         Globe,
         Smartphone,
         Palette,
@@ -50,13 +55,32 @@ export default function Services() {
         Monitor
     }
 
-    const categoryIconMap: { [key: string]: any } = {
+    const categoryIconMap: { [key: string]: React.ComponentType<{ className?: string; strokeWidth?: number }> } = {
         development: Layers,
         design: Sparkles,
         ai: Cpu
     }
 
     useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/services')
+                if (response.ok) {
+                    const result = await response.json()
+                    setData(result)
+                }
+            } catch (error) {
+                console.error('Error fetching services:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        if (!data || loading) return
+
         const ctx = gsap.context(() => {
             // Animate category headers
             gsap.set('.category-header', { y: 30, opacity: 0 })
@@ -95,9 +119,25 @@ export default function Services() {
             ScrollTrigger.refresh()
         }, container)
         return () => ctx.revert()
-    }, [])
+    }, [data, loading])
 
-    const { categories } = servicesData as { categories: Category[] }
+    if (loading) {
+        return (
+            <section id="services" className="py-32 relative bg-[#001210] overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex items-center justify-center min-h-[400px]">
+                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (!data) {
+        return null
+    }
+
+    const { categories } = data
 
     return (
         <section id="services" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">

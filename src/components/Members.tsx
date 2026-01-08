@@ -1,8 +1,51 @@
 'use client'
 
-import membersData from '@/data/members.json'
+import { useState, useEffect } from 'react'
+
+interface Member {
+    id: number
+    name: string
+    role: string
+    image: string
+}
 
 export default function Members() {
+    const [members, setMembers] = useState<Member[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch('/api/members')
+                if (response.ok) {
+                    const result = await response.json()
+                    setMembers(result)
+                }
+            } catch (error) {
+                console.error('Error fetching members:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [])
+
+    if (loading) {
+        return (
+            <section id="members" className="py-32 bg-[#001210] relative overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex items-center justify-center min-h-[400px]">
+                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    if (members.length === 0) {
+        return null
+    }
+
     return (
         <section id="members" className="py-32 bg-[#001210] relative overflow-hidden">
             {/* Background Gradients */}
@@ -22,7 +65,7 @@ export default function Members() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
-                    {membersData.map((member) => (
+                    {members.map((member) => (
                         <div key={member.id} className="group cursor-pointer">
                             <div className="relative overflow-hidden rounded-full aspect-square mb-6 border-2 border-[#008f7d]/30 group-hover:border-[#FFF4B7]/50 transition-all duration-500 shadow-[0_0_20px_rgba(0,143,125,0.1)] group-hover:shadow-[0_0_40px_rgba(255,244,183,0.2)]">
                                 <img src={member.image} alt={member.name} className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out" />
