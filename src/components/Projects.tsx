@@ -15,7 +15,7 @@ export default function Projects() {
     return (
         <section id="projects" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
             {/* Liquid Background Gradients */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-20">

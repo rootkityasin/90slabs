@@ -102,9 +102,9 @@ export default function Services() {
     return (
         <section id="services" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
             {/* Liquid Background Gradients */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-pulse" />
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#008f7d]/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/5 rounded-full blur-[150px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#008f7d]/20 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="text-center max-w-2xl mx-auto mb-20">
@@ -146,12 +146,13 @@ export default function Services() {
                                         return (
                                             <div
                                                 key={service.id}
-                                                className={`service-card group relative overflow-hidden rounded-3xl border p-6 h-full transition-all duration-500 hover:-translate-y-2 cursor-pointer
+                                                className={`service-card group relative overflow-hidden rounded-3xl border p-6 h-full transition-transform duration-300 hover:-translate-y-2 cursor-pointer
                                                     ${service.featured
                                                         ? 'border-[#FFF4B7]/40 bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 hover:border-[#FFF4B7]/60 hover:shadow-[0_0_40px_rgba(255,244,183,0.15)] md:col-span-2 lg:col-span-1'
                                                         : 'border-[#008f7d]/50 bg-[#008f7d]/20 hover:border-[#FFF4B7]/40 hover:shadow-[0_0_30px_rgba(0,143,125,0.3)]'
                                                     }
-                                                    backdrop-blur-xl`}
+                                                    backdrop-blur-lg`}
+                                                style={{ contain: 'layout style' }}
                                             >
                                                 {/* Featured Badge */}
                                                 {service.featured && (
@@ -161,7 +162,7 @@ export default function Services() {
                                                 )}
 
                                                 {/* Liquid Hover Blob */}
-                                                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#008f7d]/20 rounded-full blur-[80px] group-hover:bg-[#008f7d]/40 transition-all duration-500" />
+                                                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#008f7d]/20 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                                                 <div className="relative z-10 flex flex-col h-full">
                                                     <div className={`mb-5 inline-flex p-3 rounded-2xl w-fit border transition-all duration-300 origin-left shadow-[0_0_15px_rgba(0,143,125,0.1)]

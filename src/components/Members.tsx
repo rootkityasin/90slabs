@@ -6,7 +6,7 @@ export default function Members() {
     return (
         <section id="members" className="py-32 bg-[#001210] relative overflow-hidden">
             {/* Background Gradients */}
-            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/30 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">

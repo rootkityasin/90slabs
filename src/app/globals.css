@@ -32,25 +32,26 @@ body {
 /* Refined Liquid Glass */
 .glass {
   background: rgba(0, 143, 125, 0.15);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
   border: 1px solid rgba(255, 244, 183, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .glass-card {
   background: rgba(0, 143, 125, 0.1);
-  /* Teal Tint */
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 143, 125, 0.3);
-  /* Teal Glow Border */
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06),
-    inset 0 0 20px rgba(0, 143, 125, 0.05);
-  /* Inner Teal Glow */
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  contain: layout style;
 }
 
 .glass-card:hover {
@@ -76,31 +77,32 @@ body {
     radial-gradient(circle at 50% 0%, rgba(0, 143, 125, 0.15), transparent 50%),
     radial-gradient(circle at 100% 0%, rgba(0, 143, 125, 0.1), transparent 40%),
     radial-gradient(circle at 0% 0%, rgba(0, 143, 125, 0.1), transparent 40%);
-  filter: blur(60px);
+  filter: blur(40px);
   pointer-events: none;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .hero-bg-text,
 .hero-fg-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   font-weight: 700;
   letter-spacing: -0.05em;
   user-select: none;
   pointer-events: none;
   text-transform: uppercase;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .hero-bg-text {
   font-size: clamp(18rem, 40vw, 36rem);
-  color: #0c0c0c;
   background: linear-gradient(120deg, #0f0f0f 0%, #1a1a1a 40%, #0a0a0a 80%);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
-  filter: blur(1px) brightness(0.8);
+  filter: blur(0.5px) brightness(0.8);
   opacity: 0.85;
 }
 
@@ -108,6 +110,7 @@ body {
   font-size: clamp(16rem, 34vw, 30rem);
   background: linear-gradient(100deg, rgba(255, 255, 255, 0.9) 0%, rgba(180, 180, 180, 0.8) 40%, rgba(120, 120, 120, 0.7) 70%, rgba(255, 255, 255, 0.9) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   text-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   mix-blend-mode: screen;

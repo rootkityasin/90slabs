@@ -85,26 +85,40 @@ export default function Hero() {
         let rafId = 0
         let bgY = 0
         let fgY = 0
+        let ticking = false
+
+        // Use quickSetter for better performance
+        const setBgY = bgTextRef.current ? gsap.quickSetter(bgTextRef.current, 'y', 'px') : null
+        const setFgY = fgTextRef.current ? gsap.quickSetter(fgTextRef.current, 'y', 'px') : null
 
         const update = () => {
             const scrollY = window.scrollY || 0
-            const targetBg = scrollY * 0.08
-            const targetFg = scrollY * 0.16
+            const targetBg = scrollY * 0.06
+            const targetFg = scrollY * 0.12
 
-            bgY = lerp(bgY, targetBg, 0.08)
-            fgY = lerp(fgY, targetFg, 0.12)
+            bgY = lerp(bgY, targetBg, 0.1)
+            fgY = lerp(fgY, targetFg, 0.1)
 
-            if (bgTextRef.current) gsap.set(bgTextRef.current, { y: bgY })
-            if (fgTextRef.current) gsap.set(fgTextRef.current, { y: fgY })
+            if (setBgY) setBgY(bgY)
+            if (setFgY) setFgY(fgY)
 
-            rafId = requestAnimationFrame(update)
+            ticking = false
         }
 
-        rafId = requestAnimationFrame(update)
+        const onScroll = () => {
+            if (!ticking) {
+                rafId = requestAnimationFrame(update)
+                ticking = true
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true })
+        update() // Initial call
 
         return () => {
             ctx.revert()
             cancelAnimationFrame(rafId)
+            window.removeEventListener('scroll', onScroll)
         }
     }, [])
 
@@ -115,19 +129,7 @@ export default function Hero() {
             <div className="hero-vignette" aria-hidden></div>
             <div className="hero-noise" aria-hidden></div>
 
-            <div className="absolute inset-0 overflow-hidden" aria-hidden>
-                <div ref={bgTextRef} className="hero-bg-text">90&apos;s</div>
-                <div ref={fgTextRef} className="hero-fg-text hero-x">X</div>
-            </div>
-
             <div className="container px-4 md:px-6 relative z-10 flex flex-col items-center">
-                <div className="mb-10 opacity-0 animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-                    <div className="glass px-4 py-1.5 rounded-full text-[10px] md:text-xs font-semibold tracking-wide uppercase text-[#FFF4B7] border border-[#008f7d]/30 flex items-center gap-2 shadow-[0_0_15px_rgba(0,143,125,0.2)]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#008f7d] animate-pulse shadow-[0_0_10px_#008f7d]"></span>
-                        Introducing 90sX
-                    </div>
-                </div>
-
                 <h1 className="text-5xl md:text-8xl lg:text-[7rem] font-semibold tracking-tight mb-8 text-center leading-[1] max-w-5xl mx-auto drop-shadow-[0_0_20px_rgba(0,18,16,0.5)]">
                     <div className="overflow-hidden">
                         <span className="hero-text-1 block text-white pb-4">Precision in</span>
