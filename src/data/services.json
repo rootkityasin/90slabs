@@ -1,17 +1,82 @@
-[
-    {
-        "id": 1,
-        "title": "Web Development",
-        "description": "Building high-performance, responsive websites with modern technologies."
-    },
-    {
-        "id": 2,
-        "title": "Mobile Apps",
-        "description": "Native and cross-platform mobile applications for iOS and Android."
-    },
-    {
-        "id": 3,
-        "title": "UI/UX Design",
-        "description": "Creating intuitive and beautiful user interfaces that drive engagement."
-    }
-]
+{
+    "categories": [
+        {
+            "id": "development",
+            "title": "Development",
+            "description": "End-to-end software solutions across all platforms",
+            "services": [
+                {
+                    "id": 1,
+                    "title": "Web Application Development",
+                    "description": "Building high-performance, responsive web applications with modern technologies.",
+                    "icon": "Globe",
+                    "featured": true
+                },
+                {
+                    "id": 2,
+                    "title": "Cross-Platform Mobile Apps",
+                    "description": "Native and cross-platform mobile applications for iOS and Android.",
+                    "icon": "Smartphone"
+                },
+                {
+                    "id": 3,
+                    "title": "Desktop Application Development",
+                    "description": "Powerful desktop applications for Windows, macOS, and Linux built for performance.",
+                    "icon": "Monitor"
+                },
+                {
+                    "id": 4,
+                    "title": "Custom Software Solutions",
+                    "description": "Tailored software development services to meet your unique business requirements.",
+                    "icon": "Code2"
+                }
+            ]
+        },
+        {
+            "id": "design",
+            "title": "Design",
+            "description": "Crafting beautiful and intuitive user experiences",
+            "services": [
+                {
+                    "id": 5,
+                    "title": "UI/UX Design",
+                    "description": "Creating intuitive and beautiful user interfaces that drive engagement.",
+                    "icon": "Palette",
+                    "featured": true
+                }
+            ]
+        },
+        {
+            "id": "ai",
+            "title": "AI & Machine Learning",
+            "description": "Intelligent solutions powered by cutting-edge AI technology",
+            "services": [
+                {
+                    "id": 6,
+                    "title": "AI Accelerated Development",
+                    "description": "Launch market-ready products 70% faster with our AI-driven development process.",
+                    "icon": "Rocket",
+                    "featured": true
+                },
+                {
+                    "id": 7,
+                    "title": "AI Automation",
+                    "description": "Streamlining digital systems with intelligent automation to reduce manual workload and increase efficiency.",
+                    "icon": "Bot"
+                },
+                {
+                    "id": 8,
+                    "title": "AI Integration",
+                    "description": "Seamlessly integrate artificial intelligence capabilities into your existing software ecosystem.",
+                    "icon": "CircuitBoard"
+                },
+                {
+                    "id": 9,
+                    "title": "Machine Learning Solutions",
+                    "description": "Leverage data-driven insights and predictive models to power smarter business decisions.",
+                    "icon": "Brain"
+                }
+            ]
+        }
+    ]
+}

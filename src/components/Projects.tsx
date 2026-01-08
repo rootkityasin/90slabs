@@ -5,84 +5,76 @@ import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Projects() {
-    const sectionRef = useRef<HTMLDivElement>(null)
-    const triggerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Horizontal scroll implementation
-            // We need to make sure the container is wide enough
-            const totalWidth = projectsData.length * 100 // Approximation or use calc
-
-            // Simple grid for now to be safe, easier to make responsive quickly. 
-            // For "horizontal scroll" effect we can use a sticky container.
-            // Let's do a nice horizontal scroll within a sticky section.
-
-            if (sectionRef.current && triggerRef.current) {
-                const scrollTween = gsap.to(sectionRef.current, {
-                    x: - (sectionRef.current.scrollWidth - window.innerWidth),
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: triggerRef.current,
-                        pin: true,
-                        scrub: 1,
-                        end: '+=2000', // Scroll distance
-                    }
-                })
-            }
-
-        }, triggerRef)
-        return () => ctx.revert()
-    }, [])
+    const container = useRef<HTMLDivElement>(null)
 
     return (
-        <section id="projects" className="overflow-hidden bg-black relative">
-            {/* Desktop: Horizontal Scroll Trigger Wrapper */}
-            <div ref={triggerRef} className="hidden md:block">
-                <div className="h-screen flex items-center bg-zinc-950 border-t border-white/5 relative overflow-hidden">
-                    <div className="container mx-auto px-6 absolute top-12 left-0 z-10">
-                        <span className="text-primary font-mono text-sm tracking-widest uppercase mb-4 block">Our Work</span>
-                        <h2 className="text-6xl font-bold text-white mb-2">Selected Projects</h2>
+        <section id="projects" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
+            {/* Liquid Background Gradients */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+
+            <div className="container mx-auto px-6 relative z-10">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20">
+                    <div className="max-w-2xl">
+                        <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-white tracking-tight drop-shadow-[0_0_15px_rgba(255,244,183,0.1)]">
+                            Selected Works
+                        </h2>
+                        <p className="text-[#FFF4B7]/80 text-xl font-normal leading-relaxed">
+                            A curation of digital products that define the future.
+                        </p>
                     </div>
+                </div>
 
-                    <div ref={sectionRef} className="flex gap-16 px-20 mt-32">
-                        {projectsData.map((project, index) => (
-                            <div key={project.id} className="project-card relative w-[600px] h-[450px] flex-shrink-0 rounded-3xl overflow-hidden group cursor-none">
-                                {/* Image Background */}
-                                <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out" />
-
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
-
-                                <div className="absolute bottom-0 left-0 right-0 p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                    <span className="text-primary font-mono text-sm mb-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.category}</span>
-                                    <h3 className="text-4xl font-bold text-white mb-4">{project.title}</h3>
-                                    <div className="h-px w-full bg-white/20 group-hover:w-full transition-all duration-500 origin-left scale-x-0 group-hover:scale-x-100"></div>
+                <div className="space-y-32">
+                    {projectsData.map((project, index) => (
+                        <div key={project.id} className={`project-card flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center`}>
+                            {/* Project Image */}
+                            <div className="w-full lg:w-3/5 group relative">
+                                <div className="absolute -inset-4 bg-gradient-to-r from-[#008f7d]/20 to-[#008f7d]/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="relative overflow-hidden rounded-2xl border border-[#008f7d]/30 aspect-video glass-card">
+                                    <div className="absolute inset-0 bg-[#008f7d]/40 transition-opacity duration-500 group-hover:opacity-0 z-10" />
+                                    {/* Placeholder for actual image if available, or just a gradient div */}
+                                    <div className="w-full h-full bg-gradient-to-br from-[#008f7d]/60 to-[#001210]/60 flex items-center justify-center p-10">
+                                        <div className="text-[#FFF4B7]/20 text-6xl font-bold uppercase tracking-tighter">
+                                            {project.title}
+                                        </div>
+                                    </div>
+                                    <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
 
-            {/* Mobile: Vertical Grid */}
-            <div className="md:hidden py-24 px-6 bg-zinc-950 border-t border-white/5">
-                <div className="mb-12">
-                    <span className="text-primary font-mono text-sm tracking-widest uppercase mb-2 block">Our Work</span>
-                    <h2 className="text-4xl font-bold text-white">Selected Projects</h2>
-                </div>
+                            {/* Project Info */}
+                            <div className="w-full lg:w-2/5 flex flex-col justify-center">
+                                <div className="flex items-center gap-4 mb-6 text-sm font-medium tracking-wider uppercase text-[#FFF4B7]/60">
+                                    <span>{project.year}</span>
+                                    <span className="w-1 h-1 rounded-full bg-[#008f7d]" />
+                                    <span>{project.category}</span>
+                                </div>
 
-                <div className="flex flex-col gap-12">
-                    {projectsData.map((project) => (
-                        <div key={project.id} className="relative rounded-2xl overflow-hidden aspect-[4/3] group">
-                            <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                            <div className="absolute bottom-0 left-0 p-6">
-                                <span className="text-primary text-xs font-mono mb-2 block">{project.category}</span>
-                                <h3 className="text-2xl font-bold text-white">{project.title}</h3>
+                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white group-hover:text-[#FFF4B7] transition-colors duration-300">
+                                    {project.title}
+                                </h3>
+
+                                <p className="text-gray-300 leading-relaxed text-lg mb-8">
+                                    {project.description}
+                                </p>
+
+                                <div className="flex flex-wrap gap-3 mb-10">
+                                    {project.tech?.map((tech) => (
+                                        <span key={tech} className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#008f7d]/10 text-[#FFF4B7] border border-[#008f7d]/20 backdrop-blur-md">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <Link href="#" className="inline-flex items-center gap-3 text-[#FFF4B7] font-semibold tracking-wide group/link w-fit">
+                                    <span className="border-b border-[#FFF4B7]/30 pb-0.5 group-hover/link:border-[#FFF4B7] transition-colors">View Case Study</span>
+                                    <ArrowUpRight className="w-5 h-5 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300" />
+                                </Link>
                             </div>
                         </div>
                     ))}

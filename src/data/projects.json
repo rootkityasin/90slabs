@@ -1,20 +1,41 @@
 [
     {
         "id": 1,
-        "title": "E-Commerce Platform",
-        "category": "Web Development",
-        "image": "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=2832&auto=format&fit=crop"
+        "title": "Neon Verse",
+        "category": "Web Experience",
+        "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+        "year": "2025",
+        "description": "An immersive 3D web experience redefining digital interaction through WebGL and motion.",
+        "tech": [
+            "WebGL",
+            "Three.js",
+            "React"
+        ]
     },
     {
         "id": 2,
-        "title": "Finance Dashboard",
-        "category": "UI/UX Design",
-        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop"
+        "title": "AI Nexus",
+        "category": "Enterprise Platform",
+        "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1932&auto=format&fit=crop",
+        "year": "2024",
+        "description": "Predictive analytics dashboard empowering enterprises with actionable AI-driven insights.",
+        "tech": [
+            "Next.js",
+            "Python",
+            "TensorFlow"
+        ]
     },
     {
         "id": 3,
-        "title": "Health Tracking App",
-        "category": "Mobile App",
-        "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2670&auto=format&fit=crop"
+        "title": "Crypto Hive",
+        "category": "FinTech",
+        "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop",
+        "year": "2024",
+        "description": "Next-generation DeFi platform featuring real-time trading data and secure wallet integration.",
+        "tech": [
+            "Solidity",
+            "Web3.js",
+            "Tailwind"
+        ]
     }
 ]
