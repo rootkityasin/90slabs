@@ -125,22 +125,74 @@ export default function About() {
                         <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden glass-card flex items-center justify-center border border-[#008f7d]/30 group-hover:border-[#FFF4B7]/40 transition-colors duration-500">
                             <div className="absolute inset-0 bg-gradient-to-br from-[#001210]/80 to-[#008f7d]/50 mix-blend-overlay"></div>
 
-                            {/* Animated 90sX Typography */}
-                            <div className="text-center relative z-10">
-                                <div className="relative inline-block">
-                                    {/* Background glow layers */}
-                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black text-[#008f7d] tracking-tighter blur-[20px] opacity-30 animate-pulse select-none">90sX</div>
-                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black text-[#FFF4B7] tracking-tighter blur-[10px] opacity-20 select-none" style={{ animationDelay: '0.5s' }}>90sX</div>
+                            {/* Animated 90sX Line Drawing */}
+                            <div className="text-center relative z-10 flex items-center justify-center">
+                                <svg
+                                    viewBox="0 0 280 80"
+                                    className="w-full max-w-[400px] h-auto"
+                                    style={{ filter: 'drop-shadow(0 0 20px rgba(0, 143, 125, 0.5))' }}
+                                >
+                                    <defs>
+                                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stopColor="#FFF4B7" />
+                                            <stop offset="50%" stopColor="#ffffff" />
+                                            <stop offset="100%" stopColor="#008f7d" />
+                                        </linearGradient>
+                                    </defs>
+                                    {/* 9 */}
+                                    <path
+                                        d="M10 25 Q10 10 25 10 Q40 10 40 25 Q40 40 25 40 L40 40 L40 70"
+                                        fill="none"
+                                        stroke="url(#lineGradient)"
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="animate-[draw_2s_ease-out_forwards]"
+                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
+                                    />
+                                    {/* 0 */}
+                                    <ellipse
+                                        cx="75" cy="40" rx="20" ry="30"
+                                        fill="none"
+                                        stroke="url(#lineGradient)"
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        className="animate-[draw_2s_ease-out_0.3s_forwards]"
+                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
+                                    />
+                                    {/* s */}
+                                    <path
+                                        d="M130 25 Q110 25 110 35 Q110 45 130 45 Q150 45 150 55 Q150 65 130 65"
+                                        fill="none"
+                                        stroke="url(#lineGradient)"
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="animate-[draw_2s_ease-out_0.6s_forwards]"
+                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
+                                    />
+                                    {/* X */}
+                                    <path
+                                        d="M175 10 L215 70 M215 10 L175 70"
+                                        fill="none"
+                                        stroke="url(#lineGradient)"
+                                        strokeWidth="5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="animate-[draw_2s_ease-out_0.9s_forwards]"
+                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
+                                    />
 
-                                    {/* Main text with gradient */}
-                                    <div className="relative text-8xl md:text-[12rem] font-black tracking-tighter select-none bg-gradient-to-br from-white via-[#FFF4B7] to-[#008f7d] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,143,125,0.3)]">
+                                    {/* Glow effect text behind */}
+                                    <text
+                                        x="120" y="55"
+                                        textAnchor="middle"
+                                        className="text-6xl font-black fill-[#008f7d]/20 blur-sm animate-pulse"
+                                        style={{ filter: 'blur(8px)' }}
+                                    >
                                         90sX
-                                    </div>
-
-                                    {/* Glitch effect layers */}
-                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black tracking-tighter text-[#008f7d]/50 select-none animate-[glitch_3s_ease-in-out_infinite]" style={{ clipPath: 'inset(40% 0 40% 0)', transform: 'translate(-2px, 0)' }}>90sX</div>
-                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black tracking-tighter text-[#FFF4B7]/30 select-none animate-[glitch_3s_ease-in-out_infinite_reverse]" style={{ clipPath: 'inset(60% 0 20% 0)', transform: 'translate(2px, 0)' }}>90sX</div>
-                                </div>
+                                    </text>
+                                </svg>
                             </div>
                         </div>
                     </div>
