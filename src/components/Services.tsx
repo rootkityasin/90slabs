@@ -16,7 +16,8 @@ import {
     ArrowRight,
     Layers,
     Sparkles,
-    Cpu
+    Cpu,
+    LucideIcon
 } from 'lucide-react'
 
 interface Service {
@@ -43,7 +44,7 @@ export default function Services() {
     const [data, setData] = useState<ServicesData | null>(null)
     const [loading, setLoading] = useState(true)
 
-    const iconMap: { [key: string]: React.ComponentType<{ className?: string; strokeWidth?: number }> } = {
+    const iconMap: Record<string, LucideIcon> = {
         Globe,
         Smartphone,
         Palette,
@@ -55,7 +56,7 @@ export default function Services() {
         Monitor
     }
 
-    const categoryIconMap: { [key: string]: React.ComponentType<{ className?: string; strokeWidth?: number }> } = {
+    const categoryIconMap: Record<string, LucideIcon> = {
         development: Layers,
         design: Sparkles,
         ai: Cpu
