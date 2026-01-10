@@ -125,10 +125,22 @@ export default function About() {
                         <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden glass-card flex items-center justify-center border border-[#008f7d]/30 group-hover:border-[#FFF4B7]/40 transition-colors duration-500">
                             <div className="absolute inset-0 bg-gradient-to-br from-[#001210]/80 to-[#008f7d]/50 mix-blend-overlay"></div>
 
-                            {/* Graphic / Typography Art */}
-                            <div className="text-center relative z-10 mix-blend-difference">
-                                <div className="text-8xl md:text-[10rem] font-black text-white tracking-tighter opacity-10 select-none">{data.graphicText}</div>
-                                <div className="text-xl md:text-3xl font-bold text-[#FFF4B7] tracking-[1em] uppercase absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center drop-shadow-[0_0_10px_rgba(255,244,183,0.2)]">{data.graphicSubtext}</div>
+                            {/* Animated 90sX Typography */}
+                            <div className="text-center relative z-10">
+                                <div className="relative inline-block">
+                                    {/* Background glow layers */}
+                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black text-[#008f7d] tracking-tighter blur-[20px] opacity-30 animate-pulse select-none">90sX</div>
+                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black text-[#FFF4B7] tracking-tighter blur-[10px] opacity-20 select-none" style={{ animationDelay: '0.5s' }}>90sX</div>
+
+                                    {/* Main text with gradient */}
+                                    <div className="relative text-8xl md:text-[12rem] font-black tracking-tighter select-none bg-gradient-to-br from-white via-[#FFF4B7] to-[#008f7d] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,143,125,0.3)]">
+                                        90sX
+                                    </div>
+
+                                    {/* Glitch effect layers */}
+                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black tracking-tighter text-[#008f7d]/50 select-none animate-[glitch_3s_ease-in-out_infinite]" style={{ clipPath: 'inset(40% 0 40% 0)', transform: 'translate(-2px, 0)' }}>90sX</div>
+                                    <div className="absolute inset-0 text-8xl md:text-[12rem] font-black tracking-tighter text-[#FFF4B7]/30 select-none animate-[glitch_3s_ease-in-out_infinite_reverse]" style={{ clipPath: 'inset(60% 0 20% 0)', transform: 'translate(2px, 0)' }}>90sX</div>
+                                </div>
                             </div>
                         </div>
                     </div>

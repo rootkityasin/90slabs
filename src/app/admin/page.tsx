@@ -552,7 +552,7 @@ export default function AdminPage() {
                                                 onChange={(img) => setEditingMember({ ...editingMember, image: img })}
                                                 resolution="200x200px"
                                                 aspectRatio="1:1"
-                                                maxSize={500}
+                                                maxSize={4096}
                                             />
                                             <button
                                                 onClick={saveMember}
