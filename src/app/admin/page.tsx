@@ -17,6 +17,7 @@ import {
     Home,
     Info
 } from 'lucide-react'
+import ImageUpload from '@/components/ImageUpload'
 
 type Tab = 'projects' | 'members' | 'services' | 'hero' | 'about'
 
@@ -386,8 +387,8 @@ export default function AdminPage() {
                                 <button
                                     onClick={() => setActiveTab(id)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === id
-                                            ? 'bg-[#008f7d]/20 text-[#FFF4B7] border border-[#008f7d]/40'
-                                            : 'text-gray-400 hover:text-white hover:bg-[#008f7d]/10'
+                                        ? 'bg-[#008f7d]/20 text-[#FFF4B7] border border-[#008f7d]/40'
+                                        : 'text-gray-400 hover:text-white hover:bg-[#008f7d]/10'
                                         }`}
                                 >
                                     <Icon className="w-5 h-5" />
@@ -546,25 +547,13 @@ export default function AdminPage() {
                                                 onChange={(e) => setEditingMember({ ...editingMember, role: e.target.value })}
                                                 className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d]"
                                             />
-                                            <div>
-                                                <label className="block text-sm text-gray-400 mb-2">Photo (URL or upload)</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Image URL"
-                                                    value={editingMember.image?.startsWith('data:') ? '' : editingMember.image || ''}
-                                                    onChange={(e) => setEditingMember({ ...editingMember, image: e.target.value })}
-                                                    className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d] mb-2"
-                                                />
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={(e) => handleImageUpload(e, (img) => setEditingMember({ ...editingMember, image: img }))}
-                                                    className="w-full text-gray-400 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#008f7d] file:text-white hover:file:bg-[#00a08d]"
-                                                />
-                                                {editingMember.image && (
-                                                    <img src={editingMember.image} alt="Preview" className="mt-2 w-20 h-20 object-cover rounded-full" />
-                                                )}
-                                            </div>
+                                            <ImageUpload
+                                                value={editingMember.image || ''}
+                                                onChange={(img) => setEditingMember({ ...editingMember, image: img })}
+                                                resolution="200x200px"
+                                                aspectRatio="1:1"
+                                                maxSize={500}
+                                            />
                                             <button
                                                 onClick={saveMember}
                                                 disabled={loading}
