@@ -3,6 +3,8 @@
 import { useRef, useEffect, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lottie from 'lottie-react'
+import glitchAnimation from '../../public/Glitch-Logo-Reveal-01.json'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -125,74 +127,13 @@ export default function About() {
                         <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden glass-card flex items-center justify-center border border-[#008f7d]/30 group-hover:border-[#FFF4B7]/40 transition-colors duration-500">
                             <div className="absolute inset-0 bg-gradient-to-br from-[#001210]/80 to-[#008f7d]/50 mix-blend-overlay"></div>
 
-                            {/* Animated 90sX Line Drawing */}
-                            <div className="text-center relative z-10 flex items-center justify-center">
-                                <svg
-                                    viewBox="0 0 280 80"
-                                    className="w-full max-w-[400px] h-auto"
-                                    style={{ filter: 'drop-shadow(0 0 20px rgba(0, 143, 125, 0.5))' }}
-                                >
-                                    <defs>
-                                        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                            <stop offset="0%" stopColor="#FFF4B7" />
-                                            <stop offset="50%" stopColor="#ffffff" />
-                                            <stop offset="100%" stopColor="#008f7d" />
-                                        </linearGradient>
-                                    </defs>
-                                    {/* 9 */}
-                                    <path
-                                        d="M10 25 Q10 10 25 10 Q40 10 40 25 Q40 40 25 40 L40 40 L40 70"
-                                        fill="none"
-                                        stroke="url(#lineGradient)"
-                                        strokeWidth="4"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="animate-[draw_2s_ease-out_forwards]"
-                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
-                                    />
-                                    {/* 0 */}
-                                    <ellipse
-                                        cx="75" cy="40" rx="20" ry="30"
-                                        fill="none"
-                                        stroke="url(#lineGradient)"
-                                        strokeWidth="4"
-                                        strokeLinecap="round"
-                                        className="animate-[draw_2s_ease-out_0.3s_forwards]"
-                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
-                                    />
-                                    {/* s */}
-                                    <path
-                                        d="M130 25 Q110 25 110 35 Q110 45 130 45 Q150 45 150 55 Q150 65 130 65"
-                                        fill="none"
-                                        stroke="url(#lineGradient)"
-                                        strokeWidth="4"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="animate-[draw_2s_ease-out_0.6s_forwards]"
-                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
-                                    />
-                                    {/* X */}
-                                    <path
-                                        d="M175 10 L215 70 M215 10 L175 70"
-                                        fill="none"
-                                        stroke="url(#lineGradient)"
-                                        strokeWidth="5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="animate-[draw_2s_ease-out_0.9s_forwards]"
-                                        style={{ strokeDasharray: 200, strokeDashoffset: 200 }}
-                                    />
-
-                                    {/* Glow effect text behind */}
-                                    <text
-                                        x="120" y="55"
-                                        textAnchor="middle"
-                                        className="text-6xl font-black fill-[#008f7d]/20 blur-sm animate-pulse"
-                                        style={{ filter: 'blur(8px)' }}
-                                    >
-                                        90sX
-                                    </text>
-                                </svg>
+                            {/* Lottie Animation */}
+                            <div className="w-full h-full flex items-center justify-center p-4">
+                                <Lottie
+                                    animationData={glitchAnimation}
+                                    loop={true}
+                                    className="w-full h-full max-w-[400px]"
+                                />
                             </div>
                         </div>
                     </div>
