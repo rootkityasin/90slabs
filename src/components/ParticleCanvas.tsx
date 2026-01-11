@@ -68,9 +68,6 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
 
     // Swarm Center State
     const swarmCenter = useRef(new THREE.Vector3(0, 0, 0))
-    // Visibility State for Vanish Effect
-    const swarmVisibility = useRef(1.0)
-    const lastMousePos = useRef(new THREE.Vector3(0, 0, 0))
 
     // Initialize Particle Data
     const data = useMemo<ParticleData>(() => {
@@ -150,38 +147,6 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
         const isMouseActive = mouseX < 9000
         const dt = Math.min(delta, 0.1)
 
-        // --- Vanish-On-Move Logic ---
-
-        // 1. Calculate Mouse Speed
-        const distMoved = Math.sqrt(
-            Math.pow(mouseX - lastMousePos.current.x, 2) +
-            Math.pow(mouseY - lastMousePos.current.y, 2)
-        )
-        // Update last pos
-        lastMousePos.current.set(mouseX, mouseY, 0)
-
-        // Threshold for "moving" (in world units per frame)
-        // If distMoved > 0.01, we consider it moving
-        const isMoving = isMouseActive && distMoved > 0.05
-
-        // 2. Update Visibility Target
-        // "Not totally vanish, opacity will be ups and down"
-        let targetVisibility = 1.0
-
-        if (isMoving) {
-            // Pulse/Flicker between 0.2 and 0.5
-            targetVisibility = 0.35 + Math.sin(time * 15.0) * 0.15
-        } else {
-            targetVisibility = 1.0
-        }
-
-        // Lerp visibility (Fast transition)
-        const fadeSpeed = isMoving ? 8.0 : 4.0
-        swarmVisibility.current += (targetVisibility - swarmVisibility.current) * fadeSpeed * dt
-
-        // Clamp (Keep it safe)
-        swarmVisibility.current = Math.max(0.1, Math.min(1, swarmVisibility.current))
-
         // 3. Update Swarm Position (Dynamic Fluidity)
         // "Entire group follows it aggressively" -> REMOVE fast follow.
         // "Water does not work like that" -> Water drifts/drags.
@@ -198,7 +163,6 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
 
         const cx = swarmCenter.current.x
         const cy = swarmCenter.current.y
-        const visibility = swarmVisibility.current
 
         // Physics Loop (Unified)
         for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -295,8 +259,8 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
             alphaScale = Math.pow(alphaScale, 0.5)
 
             dummy.position.set(x, y, z)
-            // Scale by visibility (vanish on move) AND alphaScale (edge fade)
-            dummy.scale.setScalar(data.scales[i] * alphaScale * visibility)
+            // Scale by alphaScale (edge fade) ONLY - Removed visibility pulse
+            dummy.scale.setScalar(data.scales[i] * alphaScale)
 
             // Rotate shapes slightly for variety?
             // Just static rotation or slow spin
