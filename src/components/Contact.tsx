@@ -48,19 +48,19 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-32 bg-[#001210] relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-[#008f7d]/10 to-transparent pointer-events-none"></div>
+        <section id="contact" className="py-32 bg-[#f5f5f0] relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#008f7d]/05 to-transparent pointer-events-none"></div>
             {/* Big Blur behind */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#008f7d]/30 blur-[80px] rounded-full pointer-events-none mix-blend-screen"></div>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#008f7d]/10 blur-[80px] rounded-full pointer-events-none"></div>
 
             <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-                <span className="text-[#FFF4B7] font-mono text-sm tracking-widest uppercase mb-6 block animate-pulse drop-shadow-[0_0_10px_rgba(255,244,183,0.3)]">Start Your Journey</span>
+                <span className="text-[#008f7d] font-mono text-sm tracking-widest uppercase mb-6 block animate-pulse">Start Your Journey</span>
 
-                <h2 className="text-5xl md:text-8xl font-bold mb-10 text-white tracking-tighter leading-none max-w-4xl drop-shadow-[0_0_20px_rgba(0,143,125,0.4)]">
+                <h2 className="text-5xl md:text-8xl font-bold mb-10 text-[#1a1a2e] tracking-tighter leading-none max-w-4xl">
                     Ready to make waves?
                 </h2>
 
-                <p className="text-xl md:text-2xl text-[#FFF4B7]/70 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                <p className="text-xl md:text-2xl text-[#4a5568] mb-12 max-w-2xl mx-auto leading-relaxed font-light">
                     Let's build something extraordinary together. Reach out to us for your next digital venture.
                 </p>
 
@@ -74,7 +74,7 @@ export default function Contact() {
                             onChange={handleChange}
                             placeholder="Your Name"
                             required
-                            className="w-full px-6 py-4 bg-white/5 border border-[#008f7d]/30 rounded-2xl text-white placeholder:text-[#FFF4B7]/40 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300 backdrop-blur-sm"
+                            className="w-full px-6 py-4 bg-white border border-[#008f7d]/20 rounded-2xl text-[#1a1a2e] placeholder:text-[#4a5568]/60 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300"
                         />
                     </div>
 
@@ -86,7 +86,7 @@ export default function Contact() {
                             onChange={handleChange}
                             placeholder="Your Email"
                             required
-                            className="w-full px-6 py-4 bg-white/5 border border-[#008f7d]/30 rounded-2xl text-white placeholder:text-[#FFF4B7]/40 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300 backdrop-blur-sm"
+                            className="w-full px-6 py-4 bg-white border border-[#008f7d]/20 rounded-2xl text-[#1a1a2e] placeholder:text-[#4a5568]/60 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300"
                         />
                     </div>
 
@@ -98,14 +98,14 @@ export default function Contact() {
                             placeholder="Your Message"
                             required
                             rows={5}
-                            className="w-full px-6 py-4 bg-white/5 border border-[#008f7d]/30 rounded-2xl text-white placeholder:text-[#FFF4B7]/40 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300 backdrop-blur-sm resize-none"
+                            className="w-full px-6 py-4 bg-white border border-[#008f7d]/20 rounded-2xl text-[#1a1a2e] placeholder:text-[#4a5568]/60 focus:outline-none focus:border-[#008f7d] focus:ring-2 focus:ring-[#008f7d]/20 transition-all duration-300 resize-none"
                         />
                     </div>
 
                     <button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="w-full px-12 py-5 bg-[#FFF4B7] text-[#001210] font-bold text-lg rounded-full hover:scale-[1.02] transition-all duration-300 hover:bg-white hover:shadow-[0_0_40px_rgba(255,244,183,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                        className="w-full px-12 py-5 bg-[#008f7d] text-white font-bold text-lg rounded-full hover:scale-[1.02] transition-all duration-300 hover:bg-[#007a6b] hover:shadow-[0_0_40px_rgba(0,143,125,0.3)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                         {status === 'loading' ? (
                             <span className="flex items-center justify-center gap-2">
@@ -120,7 +120,7 @@ export default function Contact() {
 
                     {/* Status Messages */}
                     {status === 'success' && (
-                        <div className="p-4 bg-[#008f7d]/20 border border-[#008f7d]/50 rounded-xl text-[#FFF4B7] animate-fade-in">
+                        <div className="p-4 bg-[#008f7d]/10 border border-[#008f7d]/30 rounded-xl text-[#008f7d] animate-fade-in">
                             ✓ Message sent successfully! We'll get back to you soon.
                         </div>
                     )}
@@ -132,12 +132,12 @@ export default function Contact() {
                     )}
                 </form>
 
-                <footer className="mt-28 w-full border-t border-[#FFF4B7]/20 pt-10 flex flex-col md:flex-row justify-between items-center text-[#FFF4B7]/60 text-sm font-mono">
+                <footer className="mt-28 w-full border-t border-[#008f7d]/20 pt-10 flex flex-col md:flex-row justify-between items-center text-[#4a5568] text-sm font-mono">
                     <p>&copy; {new Date().getFullYear()} 90sX Agency.</p>
                     <div className="flex gap-8 mt-4 md:mt-0">
-                        <a href="#" className="hover:text-white transition-colors">Twitter</a>
-                        <a href="#" className="hover:text-white transition-colors">Instagram</a>
-                        <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                        <a href="#" className="hover:text-[#008f7d] transition-colors">Twitter</a>
+                        <a href="#" className="hover:text-[#008f7d] transition-colors">Instagram</a>
+                        <a href="#" className="hover:text-[#008f7d] transition-colors">LinkedIn</a>
                     </div>
                 </footer>
             </div>

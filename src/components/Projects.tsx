@@ -53,7 +53,7 @@ export default function Projects() {
 
     if (loading) {
         return (
-            <section id="projects" className="py-32 relative bg-[#001210] overflow-hidden">
+            <section id="projects" className="py-32 relative bg-[#fafaf7] overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex items-center justify-center min-h-[400px]">
                         <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
@@ -68,17 +68,17 @@ export default function Projects() {
     }
 
     return (
-        <section id="projects" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
+        <section id="projects" ref={container} className="py-32 relative bg-[#fafaf7] overflow-hidden">
             {/* Liquid Background Gradients */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/10 rounded-full blur-[80px] pointer-events-none mix-blend-screen" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/05 rounded-full blur-[80px] pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-20">
                     <div className="max-w-2xl">
-                        <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-white tracking-tight drop-shadow-[0_0_15px_rgba(255,244,183,0.1)]">
+                        <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-[#1a1a2e] tracking-tight">
                             Selected Works
                         </h2>
-                        <p className="text-[#FFF4B7]/80 text-xl font-normal leading-relaxed">
+                        <p className="text-[#4a5568] text-xl font-normal leading-relaxed">
                             A curation of digital products that define the future.
                         </p>
                     </div>
@@ -100,8 +100,8 @@ export default function Projects() {
                                 <div className="relative overflow-hidden rounded-2xl border border-[#008f7d]/30 aspect-video glass-card">
                                     <div className="absolute inset-0 bg-[#008f7d]/40 transition-opacity duration-500 group-hover:opacity-0 z-10" />
                                     {/* Placeholder for actual image if available, or just a gradient div */}
-                                    <div className="w-full h-full bg-gradient-to-br from-[#008f7d]/60 to-[#001210]/60 flex items-center justify-center p-10">
-                                        <div className="text-[#FFF4B7]/20 text-6xl font-bold uppercase tracking-tighter">
+                                    <div className="w-full h-full bg-gradient-to-br from-[#008f7d]/20 to-[#f5f5f0] flex items-center justify-center p-10">
+                                        <div className="text-[#008f7d]/20 text-6xl font-bold uppercase tracking-tighter">
                                             {project.title}
                                         </div>
                                     </div>
@@ -111,30 +111,30 @@ export default function Projects() {
 
                             {/* Project Info */}
                             <div className="w-full lg:w-2/5 flex flex-col justify-center">
-                                <div className="flex items-center gap-4 mb-6 text-sm font-medium tracking-wider uppercase text-[#FFF4B7]/60">
+                                <div className="flex items-center gap-4 mb-6 text-sm font-medium tracking-wider uppercase text-[#4a5568]">
                                     <span>{project.year}</span>
                                     <span className="w-1 h-1 rounded-full bg-[#008f7d]" />
                                     <span>{project.category}</span>
                                 </div>
 
-                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white group-hover:text-[#FFF4B7] transition-colors duration-300">
+                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-[#1a1a2e] group-hover:text-[#008f7d] transition-colors duration-300">
                                     {project.title}
                                 </h3>
 
-                                <p className="text-gray-300 leading-relaxed text-lg mb-8">
+                                <p className="text-[#4a5568] leading-relaxed text-lg mb-8">
                                     {project.description}
                                 </p>
 
                                 <div className="flex flex-wrap gap-3 mb-10">
                                     {project.tech?.map((tech) => (
-                                        <span key={tech} className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#008f7d]/10 text-[#FFF4B7] border border-[#008f7d]/20 backdrop-blur-md">
+                                        <span key={tech} className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#008f7d]/10 text-[#008f7d] border border-[#008f7d]/20 backdrop-blur-md">
                                             {tech}
                                         </span>
                                     ))}
                                 </div>
 
-                                <Link href="#" className="inline-flex items-center gap-3 text-[#FFF4B7] font-semibold tracking-wide group/link w-fit">
-                                    <span className="border-b border-[#FFF4B7]/30 pb-0.5 group-hover/link:border-[#FFF4B7] transition-colors">View Case Study</span>
+                                <Link href="#" className="inline-flex items-center gap-3 text-[#008f7d] font-semibold tracking-wide group/link w-fit">
+                                    <span className="border-b border-[#008f7d]/30 pb-0.5 group-hover/link:border-[#008f7d] transition-colors">View Case Study</span>
                                     <ArrowUpRight className="w-5 h-5 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300" />
                                 </Link>
                             </div>

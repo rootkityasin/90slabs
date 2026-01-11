@@ -63,7 +63,7 @@ export default function About() {
 
     if (loading) {
         return (
-            <section id="about" className="py-32 relative bg-[#001210] overflow-hidden">
+            <section id="about" className="py-32 relative bg-[#fafaf7] overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex items-center justify-center min-h-[400px]">
                         <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
@@ -116,10 +116,10 @@ export default function About() {
     }
 
     return (
-        <section id="about" ref={container} className="py-32 relative bg-[#001210] selection:bg-[#008f7d]/30 overflow-hidden">
+        <section id="about" ref={container} className="py-32 relative bg-[#fafaf7] selection:bg-[#008f7d]/30 overflow-hidden">
             <div className="container mx-auto px-6 relative z-10">
                 {/* Decorative line */}
-                <div className="w-px h-32 bg-gradient-to-b from-transparent via-[#FFF4B7]/20 to-transparent mx-auto absolute top-0 left-1/2 -translate-x-1/2"></div>
+                <div className="w-px h-32 bg-gradient-to-b from-transparent via-[#008f7d]/30 to-transparent mx-auto absolute top-0 left-1/2 -translate-x-1/2"></div>
 
                 <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
                     <motion.div
@@ -130,21 +130,21 @@ export default function About() {
                         viewport={{ once: true, margin: "-100px" }}
                     >
                         <motion.span
-                            className="text-[#FFF4B7] font-mono text-sm tracking-widest uppercase mb-6 block drop-shadow-[0_0_10px_rgba(255,244,183,0.3)]"
+                            className="text-[#008f7d] font-mono text-sm tracking-widest uppercase mb-6 block"
                             variants={itemVariants}
                         >
                             {data.label}
                         </motion.span>
                         <motion.h2
-                            className="text-5xl md:text-7xl font-bold mb-8 text-white leading-tight drop-shadow-[0_0_15px_rgba(0,18,16,0.5)]"
+                            className="text-5xl md:text-7xl font-bold mb-8 text-[#1a1a2e] leading-tight"
                             variants={itemVariants}
                         >
                             {data.title} <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#FFF4B7]">{data.titleHighlight}</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#008f7d] to-[#006b5c]">{data.titleHighlight}</span>
                         </motion.h2>
 
                         <motion.div
-                            className="space-y-6 text-lg md:text-xl text-[#FFF4B7]/70 font-light leading-relaxed"
+                            className="space-y-6 text-lg md:text-xl text-[#4a5568] font-light leading-relaxed"
                             variants={itemVariants}
                         >
                             {data.paragraphs.map((paragraph, index) => (
@@ -163,7 +163,7 @@ export default function About() {
                         {/* Glass reflection container */}
                         <div className="about-glass-container">
                             {/* Soft ambient glow background */}
-                            <div className="absolute -inset-6 bg-gradient-to-br from-[#008f7d]/20 to-[#008f7d]/10 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
+                            <div className="absolute -inset-6 bg-gradient-to-br from-[#008f7d]/15 to-[#008f7d]/08 rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700"></div>
 
                             {/* Main glass card */}
                             <div className="relative aspect-square md:aspect-[4/5] rounded-2xl overflow-hidden about-glass-card flex items-center justify-center">
@@ -179,7 +179,7 @@ export default function About() {
                                 </div>
 
                                 {/* Glass tint layer */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#001210]/50 via-[#008f7d]/10 to-[#001210]/60"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-[#008f7d]/05 to-white/60"></div>
 
                                 {/* Frosted glass effect */}
                                 <div className="absolute inset-0 backdrop-blur-lg backdrop-saturate-150"></div>
@@ -204,7 +204,7 @@ export default function About() {
                                 </div>
 
                                 {/* Bottom inner shadow */}
-                                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#001210]/30 to-transparent pointer-events-none"></div>
+                                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white/30 to-transparent pointer-events-none"></div>
                             </div>
 
                             {/* Mirror reflection below */}
@@ -217,7 +217,7 @@ export default function About() {
                                     />
                                 </div>
                                 {/* Gradient fade for reflection */}
-                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#001210]/80 to-[#001210]"></div>
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white"></div>
                             </div>
                         </div>
                     </motion.div>
