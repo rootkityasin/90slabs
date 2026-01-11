@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'motion/react'
 import {
     Globe,
     Smartphone,
@@ -79,49 +78,6 @@ export default function Services() {
         fetchData()
     }, [])
 
-    useEffect(() => {
-        if (!data || loading) return
-
-        const ctx = gsap.context(() => {
-            // Animate category headers
-            gsap.set('.category-header', { y: 30, opacity: 0 })
-            gsap.set('.service-card', { y: 50, opacity: 0 })
-
-            ScrollTrigger.batch('.category-header', {
-                start: 'top 85%',
-                onEnter: (elements) => {
-                    gsap.to(elements, {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.6,
-                        stagger: 0.15,
-                        ease: "power2.out",
-                        overwrite: true,
-                    })
-                },
-                once: true
-            })
-
-            ScrollTrigger.batch('.service-card', {
-                start: 'top 90%',
-                onEnter: (elements) => {
-                    gsap.to(elements, {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        stagger: 0.1,
-                        ease: "power2.out",
-                        overwrite: true,
-                    })
-                },
-                once: true
-            })
-
-            ScrollTrigger.refresh()
-        }, container)
-        return () => ctx.revert()
-    }, [data, loading])
-
     if (loading) {
         return (
             <section id="services" className="py-32 relative bg-[#001210] overflow-hidden">
@@ -139,6 +95,44 @@ export default function Services() {
     }
 
     const { categories } = data
+
+    // Animation variants
+    const headerVariants = {
+        hidden: { y: 30, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 80,
+                damping: 20
+            }
+        }
+    }
+
+    const cardContainerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+                delayChildren: 0.1
+            }
+        }
+    }
+
+    const cardVariants = {
+        hidden: { y: 50, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 70,
+                damping: 18
+            }
+        }
+    }
 
     return (
         <section id="services" ref={container} className="py-32 relative bg-[#001210] overflow-hidden">
@@ -165,7 +159,13 @@ export default function Services() {
                         return (
                             <div key={category.id} className="category-section">
                                 {/* Category Header */}
-                                <div className="category-header flex items-center gap-4 mb-8 pb-4 border-b border-[#008f7d]/30">
+                                <motion.div
+                                    className="flex items-center gap-4 mb-8 pb-4 border-b border-[#008f7d]/30"
+                                    variants={headerVariants}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true, margin: "-50px" }}
+                                >
                                     <div className="p-3 rounded-xl bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 border border-[#008f7d]/40 shadow-[0_0_20px_rgba(0,143,125,0.2)]">
                                         <CategoryIcon className="w-6 h-6 text-[#FFF4B7]" strokeWidth={1.5} />
                                     </div>
@@ -177,17 +177,24 @@ export default function Services() {
                                             {category.description}
                                         </p>
                                     </div>
-                                </div>
+                                </motion.div>
 
                                 {/* Service Cards Grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                <motion.div
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                                    variants={cardContainerVariants}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true, margin: "-30px" }}
+                                >
                                     {category.services.map((service) => {
                                         const IconComponent = iconMap[service.icon] || Globe
 
                                         return (
-                                            <div
+                                            <motion.div
                                                 key={service.id}
-                                                className={`service-card group relative overflow-hidden rounded-3xl border p-6 h-full transition-transform duration-300 hover:-translate-y-2 cursor-pointer
+                                                variants={cardVariants}
+                                                className={`group relative overflow-hidden rounded-3xl border p-6 h-full transition-transform duration-300 hover:-translate-y-2 cursor-pointer
                                                     ${service.featured
                                                         ? 'border-[#FFF4B7]/40 bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 hover:border-[#FFF4B7]/60 hover:shadow-[0_0_40px_rgba(255,244,183,0.15)] md:col-span-2 lg:col-span-1'
                                                         : 'border-[#008f7d]/50 bg-[#008f7d]/20 hover:border-[#FFF4B7]/40 hover:shadow-[0_0_30px_rgba(0,143,125,0.3)]'
@@ -227,10 +234,10 @@ export default function Services() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </motion.div>
                                         )
                                     })}
-                                </div>
+                                </motion.div>
                             </div>
                         )
                     })}

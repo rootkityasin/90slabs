@@ -1,12 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'motion/react'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-
-gsap.registerPlugin(ScrollTrigger)
 
 interface Project {
     id: number
@@ -39,6 +36,20 @@ export default function Projects() {
         }
         fetchData()
     }, [])
+
+    // Animation variants
+    const projectVariants = {
+        hidden: { y: 60, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 60,
+                damping: 20
+            }
+        }
+    }
 
     if (loading) {
         return (
@@ -75,7 +86,14 @@ export default function Projects() {
 
                 <div className="space-y-32">
                     {projects.map((project, index) => (
-                        <div key={project.id} className={`project-card flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center`}>
+                        <motion.div
+                            key={project.id}
+                            className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center`}
+                            variants={projectVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                        >
                             {/* Project Image */}
                             <div className="w-full lg:w-3/5 group relative">
                                 <div className="absolute -inset-4 bg-gradient-to-r from-[#008f7d]/20 to-[#008f7d]/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -120,7 +138,7 @@ export default function Projects() {
                                     <ArrowUpRight className="w-5 h-5 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300" />
                                 </Link>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
