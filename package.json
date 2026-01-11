@@ -11,6 +11,7 @@
   "dependencies": {
     "@studio-freight/react-lenis": "^0.0.47",
     "@types/nodemailer": "^7.0.4",
+    "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.562.0",
@@ -20,6 +21,7 @@
     "nodemailer": "^7.0.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "run": "^1.5.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

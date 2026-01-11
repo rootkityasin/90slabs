@@ -15,7 +15,8 @@ import {
     FolderKanban,
     Layers,
     Home,
-    Info
+    Info,
+    ShieldX
 } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 
@@ -73,6 +74,7 @@ interface AboutData {
 export default function AdminPage() {
     const [apiKey, setApiKey] = useState('')
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [adminEnabled, setAdminEnabled] = useState<boolean | null>(null)
     const [activeTab, setActiveTab] = useState<Tab>('projects')
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -88,6 +90,20 @@ export default function AdminPage() {
     const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null)
     const [editingMember, setEditingMember] = useState<Partial<Member> | null>(null)
     const [editingService, setEditingService] = useState<Partial<Service & { categoryId: string }> | null>(null)
+
+    // Check if admin is enabled on mount
+    useEffect(() => {
+        async function checkAdminEnabled() {
+            try {
+                const res = await fetch('/api/admin/check')
+                const data = await res.json()
+                setAdminEnabled(data.configured)
+            } catch {
+                setAdminEnabled(false)
+            }
+        }
+        checkAdminEnabled()
+    }, [])
 
     // Load API key from localStorage
     useEffect(() => {
@@ -309,6 +325,30 @@ export default function AdminPage() {
         reader.readAsDataURL(file)
     }
 
+    // === LOADING STATE ===
+    if (adminEnabled === null) {
+        return (
+            <div className="min-h-screen bg-[#001210] flex items-center justify-center p-6">
+                <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+            </div>
+        )
+    }
+
+    // === ADMIN DISABLED ===
+    if (!adminEnabled) {
+        return (
+            <div className="min-h-screen bg-[#001210] flex items-center justify-center p-6">
+                <div className="w-full max-w-md p-8 bg-[#002420] rounded-2xl border border-red-500/30 text-center">
+                    <ShieldX className="w-16 h-16 text-red-500 mx-auto mb-6" />
+                    <h1 className="text-2xl font-bold text-white mb-4">Admin Disabled</h1>
+                    <p className="text-[#FFF4B7]/60">
+                        Admin panel is not configured. Please set ADMIN_SECRET_KEY in your environment variables.
+                    </p>
+                </div>
+            </div>
+        )
+    }
+
     // === AUTH SCREEN ===
     if (!isAuthenticated) {
         return (
@@ -365,10 +405,10 @@ export default function AdminPage() {
 
             {/* Message Toast */}
             {message && (
-                <div className={`fixed top-20 right-6 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg ${message.type === 'success' ? 'bg-green-500/20 border border-green-500/50 text-green-300' : 'bg-red-500/20 border border-red-500/50 text-red-300'
+                <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 px-5 py-3 rounded-xl shadow-2xl backdrop-blur-sm ${message.type === 'success' ? 'bg-green-500/90 border border-green-400 text-white' : 'bg-red-500/90 border border-red-400 text-white'
                     }`}>
                     {message.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
-                    {message.text}
+                    <span className="font-medium">{message.text}</span>
                 </div>
             )}
 
@@ -455,12 +495,14 @@ export default function AdminPage() {
                                                 onChange={(e) => setEditingProject({ ...editingProject, description: e.target.value })}
                                                 className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d] resize-none"
                                             />
-                                            <input
-                                                type="text"
-                                                placeholder="Image URL"
+                                            <ImageUpload
                                                 value={editingProject.image || ''}
-                                                onChange={(e) => setEditingProject({ ...editingProject, image: e.target.value })}
-                                                className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d]"
+                                                onChange={(img) => setEditingProject({ ...editingProject, image: img })}
+                                                resolution="800x600px"
+                                                aspectRatio="4:3"
+                                                maxSize={4096}
+                                                apiKey={apiKey}
+                                                folder="90sx/projects"
                                             />
                                             <input
                                                 type="text"
@@ -553,6 +595,8 @@ export default function AdminPage() {
                                                 resolution="200x200px"
                                                 aspectRatio="1:1"
                                                 maxSize={4096}
+                                                apiKey={apiKey}
+                                                folder="90sx/members"
                                             />
                                             <button
                                                 onClick={saveMember}
