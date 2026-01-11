@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
 // --- Configuration & Constants ---
-const PARTICLE_COUNT = 300
+const PARTICLE_COUNT = 120
 const SHAPE_COUNT = 4
 const PARTICLES_PER_SHAPE = Math.ceil(PARTICLE_COUNT / SHAPE_COUNT)
 const COLORS = ['#EA4335', '#34A853', '#000080', '#4FC3F7', '#FBBC05'] // Red, Green, Navy, Sky Blue, Yellow
@@ -93,7 +93,8 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
 
         // Swarm Config
         // "Make swarm less tighter" -> Increase radius significantly
-        // "Reduce inner circle" -> Adjust power to allow particles closer to center (less of a hole)
+        // "Reduce inner circle" -> Adjust power to allow particles closer to center (less of a hole) 
+        // while the larger base radius spreads the "outer" loose.
         const swarmRadiusBase = 8.5
 
         for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -107,15 +108,17 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
             const rRand = Math.random()
             radii[i] = Math.pow(rRand, 0.55) * swarmRadiusBase * (0.8 + Math.random() * 0.5)
 
-            speeds[i] = 0.05 + Math.random() * 0.15
+            // Slower orbit for underwater drift
+            speeds[i] = 0.02 + Math.random() * 0.08
 
             // Wavy / Liftoff params re-purposed for organic wave
             // liftoffFreqs -> Wave Frequency (how many ripples)
             // liftoffAmps -> Wave Amplitude (how deep)
-            liftoffFreqs[i] = 2.0 + Math.random() * 4.0 // 2 to 6 ripples
+            liftoffFreqs[i] = 1.0 + Math.random() * 3.0 // Slower wave
             liftoffAmps[i] = 0.5 + Math.random() * 1.5 // Significant wave depth
 
-            scales[i] = 0.5 + Math.random() * 1.5
+            // "Increase the size a bit" -> 1.5 to 3.0
+            scales[i] = 1.5 + Math.random() * 1.5
 
             velocities[i * 2] = 0
             velocities[i * 2 + 1] = 0
@@ -180,10 +183,11 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
         swarmVisibility.current = Math.max(0.1, Math.min(1, swarmVisibility.current))
 
         // 3. Update Swarm Position (Dynamic Fluidity)
-        // Instead of hard snapping (stiff), we accelerate the swarm when "vanishing"
-        // so it catches up to the mouse quickly, then floats heavily when visible.
+        // "Entire group follows it aggressively" -> REMOVE fast follow.
+        // "Water does not work like that" -> Water drifts/drags.
+        // We use a constant, slow lerp. The swarm will "trail" behind the mouse.
 
-        const centerLerpSpeed = isMoving ? 5.0 : 0.8 // Fast follow when moving, heavy drag when still
+        const centerLerpSpeed = 1.0 // Constant slow drag
         const swarmLerp = 1 - Math.exp(-centerLerpSpeed * dt)
 
         const targetCenterX = isMouseActive ? mouseX : 0
@@ -241,7 +245,7 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
                 const normDist = 1 - dist / MOUSE_INFLUENCE_RADIUS
 
                 // Exponential force curve for softer feel at edge, strong at center
-                const force = Math.pow(normDist, 2) * 40.0 // Strength
+                const force = Math.pow(normDist, 2) * 50.0 // Slightly stronger push for water displacement
 
                 // Direction from Mouse TO Particle
                 let stressAngle = Math.atan2(dy, dx)
@@ -252,7 +256,8 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
 
             // 2. Spring Force (Return to Orbit)
             // Pulls offset back to (0,0) - i.e., back to the orbital path
-            const stiffness = 2.0
+            // Reduced rigidity for "water shadow" drift
+            const stiffness = 0.5
             ax -= offsetX * stiffness
             ay -= offsetY * stiffness
 
@@ -261,7 +266,8 @@ function AntigravityParticles({ mousePos }: { mousePos: THREE.Vector3 }) {
             vy += ay * dt
 
             // 4. Apply Damping (Friction/Air Resistance)
-            const damping = 0.92 // Slippery but stable
+            // High viscosity
+            const damping = 0.95
             vx *= damping
             vy *= damping
 
