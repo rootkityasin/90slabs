@@ -16,11 +16,31 @@ import {
     Layers,
     Home,
     Info,
-    ShieldX
+    ShieldX,
+    ExternalLink
 } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent
+} from '@dnd-kit/core'
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+    useSortable
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 type Tab = 'projects' | 'members' | 'services' | 'hero' | 'about'
+
+// ... (skipping unchanged code)
 
 interface Project {
     id: number
@@ -30,6 +50,8 @@ interface Project {
     year: string
     image: string
     tech: string[]
+    order?: number
+    link?: string
 }
 
 interface Member {
@@ -37,6 +59,7 @@ interface Member {
     name: string
     role: string
     image: string
+    link?: string
 }
 
 interface Service {
@@ -71,6 +94,64 @@ interface AboutData {
     graphicSubtext: string
 }
 
+function SortableProjectItem({ project, onEdit, onDelete }: { project: Project; onEdit: (p: Project) => void; onDelete: (id: number) => void }) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id: project.id })
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    }
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+            className="p-4 bg-[#002420] rounded-xl border border-[#008f7d]/30 flex items-center justify-between touch-none"
+        >
+            <div>
+                <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-white">{project.title}</h3>
+                    {project.link && (
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-[#008f7d] hover:text-[#00a08d]" title="View Deployed">
+                            <ExternalLink className="w-3 h-3" />
+                        </a>
+                    )}
+                </div>
+                <p className="text-sm text-gray-400">{project.category} · {project.year}</p>
+            </div>
+            <div className="flex gap-2">
+                <button
+                    onClick={(e) => {
+                        // Prevent drag start when clicking buttons
+                        e.stopPropagation()
+                        onEdit(project)
+                    }}
+                    className="p-2 text-[#FFF4B7]/60 hover:text-[#FFF4B7] transition-colors"
+                >
+                    <Edit3 className="w-4 h-4" />
+                </button>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onDelete(project.id)
+                    }}
+                    className="p-2 text-red-400/60 hover:text-red-400 transition-colors"
+                >
+                    <Trash2 className="w-4 h-4" />
+                </button>
+            </div>
+        </div>
+    )
+}
+
 export default function AdminPage() {
     const [apiKey, setApiKey] = useState('')
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -91,6 +172,49 @@ export default function AdminPage() {
     const [editingMember, setEditingMember] = useState<Partial<Member> | null>(null)
     const [editingService, setEditingService] = useState<Partial<Service & { categoryId: string }> | null>(null)
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    )
+
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            setProjects((items) => {
+                const oldIndex = items.findIndex((item) => item.id === active.id)
+                const newIndex = items.findIndex((item) => item.id === over.id)
+                const newItems = arrayMove(items, oldIndex, newIndex)
+
+                // Trigger background API update
+                // We map to { id, order } where order is the index + 1
+                const reorderData = newItems.map((item, index) => ({
+                    id: item.id,
+                    order: index + 1
+                }))
+
+                fetch('/api/admin/projects/reorder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': apiKey
+                    },
+                    body: JSON.stringify({ items: reorderData })
+                }).then(res => {
+                    if (res.ok) {
+                        showMessage('success', 'Order updated')
+                    } else {
+                        showMessage('error', 'Failed to save order')
+                    }
+                })
+
+                return newItems
+            })
+        }
+    }
+
     // Check if admin is enabled on mount
     useEffect(() => {
         async function checkAdminEnabled() {
@@ -105,12 +229,32 @@ export default function AdminPage() {
         checkAdminEnabled()
     }, [])
 
-    // Load API key from localStorage
+    // Load API key from localStorage and verify
     useEffect(() => {
         const saved = localStorage.getItem('admin_api_key')
         if (saved) {
             setApiKey(saved)
-            setIsAuthenticated(true)
+            // Verify the saved key
+            fetch('/api/admin/check', {
+                headers: { 'X-Admin-Key': saved }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.valid) {
+                        setIsAuthenticated(true)
+                    } else {
+                        // Key is invalid, clear it
+                        localStorage.removeItem('admin_api_key')
+                        setApiKey('')
+                        setIsAuthenticated(false)
+                        showMessage('error', 'Session expired or invalid key')
+                    }
+                })
+                .catch(() => {
+                    // If check fails (network error), maybe let them stay logged in but show warning?
+                    // Better to be safe and require re-login or just assume offline.
+                    // For now, let's just not set authenticated if we can't verify.
+                })
         }
     }, [])
 
@@ -119,14 +263,30 @@ export default function AdminPage() {
         setTimeout(() => setMessage(null), 4000)
     }
 
-    const saveApiKey = () => {
+    const saveApiKey = async () => {
         if (apiKey.length < 10) {
             showMessage('error', 'API key must be at least 10 characters')
             return
         }
-        localStorage.setItem('admin_api_key', apiKey)
-        setIsAuthenticated(true)
-        showMessage('success', 'API key saved')
+
+        setLoading(true)
+        try {
+            const res = await fetch('/api/admin/check', {
+                headers: { 'X-Admin-Key': apiKey }
+            })
+            const data = await res.json()
+
+            if (data.valid) {
+                localStorage.setItem('admin_api_key', apiKey)
+                setIsAuthenticated(true)
+                showMessage('success', 'API key verified and saved')
+            } else {
+                showMessage('error', 'Invalid API key')
+            }
+        } catch (error) {
+            showMessage('error', 'Failed to verify API key')
+        }
+        setLoading(false)
     }
 
     const logout = () => {
@@ -163,7 +323,7 @@ export default function AdminPage() {
         }
     }, [isAuthenticated, fetchData])
 
-    const apiRequest = async (url: string, method: string, body?: Record<string, unknown>) => {
+    const apiRequest = async (url: string, method: string, body?: any) => {
         try {
             const res = await fetch(url, {
                 method,
@@ -506,6 +666,13 @@ export default function AdminPage() {
                                             />
                                             <input
                                                 type="text"
+                                                placeholder="Deployed Link (Optional)"
+                                                value={editingProject.link || ''}
+                                                onChange={(e) => setEditingProject({ ...editingProject, link: e.target.value })}
+                                                className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d]"
+                                            />
+                                            <input
+                                                type="text"
                                                 placeholder="Tech stack (comma separated)"
                                                 value={editingProject.tech?.join(', ') || ''}
                                                 onChange={(e) => setEditingProject({ ...editingProject, tech: e.target.value.split(',').map(t => t.trim()) })}
@@ -525,28 +692,25 @@ export default function AdminPage() {
 
                             {/* Projects List */}
                             <div className="grid gap-4">
-                                {projects.map((project) => (
-                                    <div key={project.id} className="p-4 bg-[#002420] rounded-xl border border-[#008f7d]/30 flex items-center justify-between">
-                                        <div>
-                                            <h3 className="font-semibold text-white">{project.title}</h3>
-                                            <p className="text-sm text-gray-400">{project.category} · {project.year}</p>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={() => setEditingProject(project)}
-                                                className="p-2 text-[#FFF4B7]/60 hover:text-[#FFF4B7] transition-colors"
-                                            >
-                                                <Edit3 className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => deleteProject(project.id)}
-                                                className="p-2 text-red-400/60 hover:text-red-400 transition-colors"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
+                                >
+                                    <SortableContext
+                                        items={projects.map(p => p.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {projects.map((project) => (
+                                            <SortableProjectItem
+                                                key={project.id}
+                                                project={project}
+                                                onEdit={setEditingProject}
+                                                onDelete={deleteProject}
+                                            />
+                                        ))}
+                                    </SortableContext>
+                                </DndContext>
                             </div>
                         </div>
                     )}
@@ -589,6 +753,13 @@ export default function AdminPage() {
                                                 onChange={(e) => setEditingMember({ ...editingMember, role: e.target.value })}
                                                 className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d]"
                                             />
+                                            <input
+                                                type="text"
+                                                placeholder="Portfolio Link (Optional)"
+                                                value={editingMember.link || ''}
+                                                onChange={(e) => setEditingMember({ ...editingMember, link: e.target.value })}
+                                                className="w-full px-4 py-3 bg-[#001210] border border-[#008f7d]/30 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-[#008f7d]"
+                                            />
                                             <ImageUpload
                                                 value={editingMember.image || ''}
                                                 onChange={(img) => setEditingMember({ ...editingMember, image: img })}
@@ -621,6 +792,11 @@ export default function AdminPage() {
                                             <div>
                                                 <h3 className="font-semibold text-white">{member.name}</h3>
                                                 <p className="text-sm text-[#008f7d]">{member.role}</p>
+                                                {member.link && (
+                                                    <a href={member.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline block mt-1 truncate max-w-[150px]">
+                                                        {member.link}
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex gap-2 justify-end">

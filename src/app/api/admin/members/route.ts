@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
         const nameCheck = validateInput(body.name, 'string', 100)
         const roleCheck = validateInput(body.role, 'string', 100)
         const imageCheck = validateInput(body.image, 'string', 50000) // Allow base64 images
+        const linkCheck = validateInput(body.link, 'string', 200) // Optional portfolio link
 
         if (!nameCheck.valid || !roleCheck.valid) {
             return NextResponse.json(
@@ -45,7 +46,8 @@ export async function POST(request: NextRequest) {
             id: newId,
             name: nameCheck.value,
             role: roleCheck.value,
-            image: imageCheck.valid ? imageCheck.value : ''
+            image: imageCheck.valid ? imageCheck.value : '',
+            link: linkCheck.valid ? linkCheck.value : ''
         }
 
         await db.collection('members').insertOne(newMember)
@@ -91,6 +93,10 @@ export async function PUT(request: NextRequest) {
         if (body.image) {
             const check = validateInput(body.image, 'string', 50000)
             if (check.valid) updateData.image = check.value
+        }
+        if (body.link !== undefined) {
+            const check = validateInput(body.link, 'string', 200)
+            if (check.valid) updateData.link = check.value
         }
 
         const result = await db.collection('members').updateOne(

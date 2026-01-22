@@ -4,7 +4,7 @@ import { getDatabase } from '@/lib/mongodb'
 export async function GET() {
     try {
         const db = await getDatabase()
-        const projects = await db.collection('projects').find({}).toArray()
+        const projects = await db.collection('projects').find({}).sort({ order: 1 }).toArray()
 
         if (!projects || projects.length === 0) {
             return NextResponse.json(

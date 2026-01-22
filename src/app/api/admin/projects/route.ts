@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
         const descriptionCheck = validateInput(body.description, 'string', 1000)
         const yearCheck = validateInput(body.year, 'string', 10)
         const imageCheck = validateInput(body.image, 'string', 2000)
+        const linkCheck = validateInput(body.link, 'string', 500) // Optional deployed link
 
         if (!titleCheck.valid || !categoryCheck.valid || !descriptionCheck.valid) {
             return NextResponse.json(
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest) {
             description: descriptionCheck.value,
             year: yearCheck.valid ? yearCheck.value : new Date().getFullYear().toString(),
             image: imageCheck.valid ? imageCheck.value : '',
+            link: linkCheck.valid ? linkCheck.value : '',
             tech: Array.isArray(body.tech) ? body.tech.map((t: unknown) => sanitizeString(t)) : []
         }
 
@@ -109,6 +111,10 @@ export async function PUT(request: NextRequest) {
         if (body.image) {
             const check = validateInput(body.image, 'string', 2000)
             if (check.valid) updateData.image = check.value
+        }
+        if (body.link !== undefined) {
+            const check = validateInput(body.link, 'string', 500)
+            if (check.valid) updateData.link = check.value
         }
         if (body.tech && Array.isArray(body.tech)) {
             updateData.tech = body.tech.map((t: unknown) => sanitizeString(t))

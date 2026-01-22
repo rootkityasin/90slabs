@@ -44,7 +44,7 @@ export default function Projects() {
             y: 0,
             opacity: 1,
             transition: {
-                type: 'spring',
+                type: 'spring' as const,
                 stiffness: 60,
                 damping: 20
             }
