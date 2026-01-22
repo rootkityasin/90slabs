@@ -1,5 +1,5 @@
 {
-  "name": "90sx",
+  "name": "90slabs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -25,8 +25,8 @@
     "motion": "^12.25.0",
     "next": "16.1.1",
     "nodemailer": "^7.0.12",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "run": "^1.5.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0"
@@ -34,8 +34,8 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "tailwindcss": "^4",
