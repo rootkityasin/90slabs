@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'motion/react'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
@@ -37,26 +36,14 @@ export default function Projects() {
         fetchData()
     }, [])
 
-    // Animation variants
-    const projectVariants = {
-        hidden: { y: 60, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring' as const,
-                stiffness: 60,
-                damping: 20
-            }
-        }
-    }
+    // Animation variants removed
 
     if (loading) {
         return (
             <section id="projects" className="py-32 relative bg-[#fafaf7] overflow-hidden">
                 <div className="container mx-auto px-6 relative z-10">
                     <div className="flex items-center justify-center min-h-[400px]">
-                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
+                        <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full" />
                     </div>
                 </div>
             </section>
@@ -86,26 +73,22 @@ export default function Projects() {
 
                 <div className="space-y-32">
                     {projects.map((project, index) => (
-                        <motion.div
+                        <div
                             key={project.id}
                             className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-center`}
-                            variants={projectVariants}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: true, margin: "-100px" }}
                         >
                             {/* Project Image */}
                             <div className="w-full lg:w-3/5 group relative">
-                                <div className="absolute -inset-4 bg-gradient-to-r from-[#008f7d]/20 to-[#008f7d]/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute -inset-4 bg-gradient-to-r from-[#008f7d]/20 to-[#008f7d]/20 rounded-3xl blur-2xl opacity-0" />
                                 <div className="relative overflow-hidden rounded-2xl border border-[#008f7d]/30 aspect-video glass-card">
-                                    <div className="absolute inset-0 bg-[#008f7d]/40 transition-opacity duration-500 group-hover:opacity-0 z-10" />
+                                    <div className="absolute inset-0 bg-[#008f7d]/40 z-10" />
                                     {/* Placeholder for actual image if available, or just a gradient div */}
                                     <div className="w-full h-full bg-gradient-to-br from-[#008f7d]/20 to-[#f5f5f0] flex items-center justify-center p-10">
                                         <div className="text-[#008f7d]/20 text-6xl font-bold uppercase tracking-tighter">
                                             {project.title}
                                         </div>
                                     </div>
-                                    <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500 mix-blend-overlay" />
+                                    <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" />
                                 </div>
                             </div>
 
@@ -117,7 +100,7 @@ export default function Projects() {
                                     <span>{project.category}</span>
                                 </div>
 
-                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-[#1a1a2e] group-hover:text-[#008f7d] transition-colors duration-300">
+                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-[#1a1a2e]">
                                     {project.title}
                                 </h3>
 
@@ -133,12 +116,12 @@ export default function Projects() {
                                     ))}
                                 </div>
 
-                                <Link href="#" className="inline-flex items-center gap-3 text-[#008f7d] font-semibold tracking-wide group/link w-fit">
-                                    <span className="border-b border-[#008f7d]/30 pb-0.5 group-hover/link:border-[#008f7d] transition-colors">View Case Study</span>
-                                    <ArrowUpRight className="w-5 h-5 transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform duration-300" />
+                                <Link href="#" className="inline-flex items-center gap-3 text-[#008f7d] font-semibold tracking-wide w-fit">
+                                    <span className="border-b border-[#008f7d]/30 pb-0.5">View Case Study</span>
+                                    <ArrowUpRight className="w-5 h-5" />
                                 </Link>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

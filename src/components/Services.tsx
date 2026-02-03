@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'motion/react'
 import {
     Globe,
     Smartphone,
@@ -96,46 +95,55 @@ export default function Services() {
 
     const { categories } = data
 
-    // Animation variants
-    const headerVariants = {
-        hidden: { y: 30, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring' as const,
-                stiffness: 80,
-                damping: 20
-            }
-        }
-    }
+    const renderCard = (service: Service, idx: number, prefix = '') => {
+        const IconComponent = iconMap[service.icon] || Globe
+        return (
+            <div
+                key={`${prefix}-${service.id}-${idx}`}
+                className={`group relative overflow-hidden rounded-3xl border p-6 h-full min-w-[280px] w-[320px] cursor-pointer transform transition-all duration-500 ease-out hover:z-50
+                    ${service.featured
+                        ? 'border-[#008f7d]/40 bg-white hover:border-[#008f7d]/60'
+                        : 'border-[#008f7d]/20 bg-white/80 hover:border-[#008f7d]/40'
+                    }
+                    backdrop-blur-lg
+                    hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(0,143,125,0.15)]`}
+            >
+                {service.featured && (
+                    <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-[#008f7d]/10 border border-[#008f7d]/30">
+                        <span className="text-[10px] font-semibold text-[#008f7d] uppercase tracking-wider">Featured</span>
+                    </div>
+                )}
 
-    const cardContainerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.08,
-                delayChildren: 0.1
-            }
-        }
-    }
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#008f7d]/10 rounded-full blur-[60px] opacity-0 group-hover:opacity-100" />
 
-    const cardVariants = {
-        hidden: { y: 50, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring' as const,
-                stiffness: 70,
-                damping: 18
-            }
-        }
+                <div className="relative z-10 flex flex-col h-full">
+                    <div className={`mb-5 inline-flex p-3 rounded-2xl w-fit border origin-left shadow-[0_0_15px_rgba(0,143,125,0.1)]
+                        ${service.featured
+                            ? 'bg-[#FFF4B7]/10 border-[#FFF4B7]/30'
+                            : 'bg-[#008f7d]/10 border-[#008f7d]/20'
+                        }`}>
+                        <IconComponent className={`w-7 h-7 ${service.featured ? 'text-[#008f7d]' : 'text-[#008f7d]'}`} strokeWidth={1.5} />
+                    </div>
+
+                    <h4 className="text-xl font-semibold text-[#1a1a2e] mb-2 tracking-wide">{service.title}</h4>
+
+                    <p className="text-[#4a5568] leading-relaxed text-sm font-normal mb-6 flex-grow">
+                        {service.description}
+                    </p>
+
+                    <div className="flex items-center text-xs font-semibold tracking-wide text-[#008f7d]">
+                        <span className="mr-2">LEARN MORE</span>
+                        <div className="w-7 h-7 rounded-full bg-[#008f7d]/10 flex items-center justify-center">
+                            <ArrowRight className="w-3.5 h-3.5" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
-        <section id="services" ref={container} className="py-32 relative bg-[#f5f5f0] overflow-hidden">
+        <section id="services" ref={container} className="py-32 relative bg-[#f5f5f0] overflow-visible">
             {/* Liquid Background Gradients */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/05 rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#008f7d]/08 rounded-full blur-[80px] pointer-events-none" />
@@ -153,19 +161,23 @@ export default function Services() {
 
                 {/* Categories */}
                 <div className="space-y-20">
-                    {categories.map((category) => {
+                    {categories.map((category, catIdx) => {
                         const CategoryIcon = categoryIconMap[category.id] || Layers
 
+                        // Ensure short lists are repeated so marquee feels continuous
+                        const servicesToShow = (() => {
+                            const base = category.services || []
+                            if (base.length === 0) return []
+                            const MIN_SERVICES = 8
+                            let arr = [...base]
+                            while (arr.length < MIN_SERVICES) arr = arr.concat(base)
+                            return arr
+                        })()
+
                         return (
-                            <div key={category.id} className="category-section">
+                            <div key={category.id} className="category-section overflow-visible">
                                 {/* Category Header */}
-                                <motion.div
-                                    className="flex items-center gap-4 mb-8 pb-4 border-b border-[#008f7d]/20"
-                                    variants={headerVariants}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: "-50px" }}
-                                >
+                                <div className="flex items-center gap-4 mb-8 pb-4 border-b border-[#008f7d]/20">
                                     <div className="p-3 rounded-xl bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 border border-[#008f7d]/40 shadow-[0_0_20px_rgba(0,143,125,0.2)]">
                                         <CategoryIcon className="w-6 h-6 text-[#008f7d]" strokeWidth={1.5} />
                                     </div>
@@ -177,67 +189,51 @@ export default function Services() {
                                             {category.description}
                                         </p>
                                     </div>
-                                </motion.div>
+                                </div>
 
                                 {/* Service Cards Grid */}
-                                <motion.div
-                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                                    variants={cardContainerVariants}
-                                    initial="hidden"
-                                    whileInView="visible"
-                                    viewport={{ once: true, margin: "-30px" }}
-                                >
-                                    {category.services.map((service) => {
-                                        const IconComponent = iconMap[service.icon] || Globe
+                                <div className="overflow-visible pt-4 pb-4 -mt-8">
+                                    <div className="marquee-wrapper">
+                                        <div className={`marquee-track ${catIdx % 2 === 1 ? 'marquee-reverse' : ''}`}>
+                                            <div className="marquee-group flex mt-4 mb-4 gap-6">
+                                                {servicesToShow.map((service, idx) => renderCard(service, idx, 'first'))}
+                                            </div>
 
-                                        return (
-                                            <motion.div
-                                                key={service.id}
-                                                variants={cardVariants}
-                                                className={`group relative overflow-hidden rounded-3xl border p-6 h-full transition-transform duration-300 hover:-translate-y-2 cursor-pointer
-                                                    ${service.featured
-                                                        ? 'border-[#008f7d]/40 bg-white hover:border-[#008f7d]/60 hover:shadow-[0_0_40px_rgba(0,143,125,0.15)] md:col-span-2 lg:col-span-1'
-                                                        : 'border-[#008f7d]/20 bg-white/80 hover:border-[#008f7d]/40 hover:shadow-[0_0_30px_rgba(0,143,125,0.15)]'
-                                                    }
-                                                    backdrop-blur-lg`}
-                                                style={{ contain: 'layout style' }}
-                                            >
-                                                {/* Featured Badge */}
-                                                {service.featured && (
-                                                    <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-[#008f7d]/10 border border-[#008f7d]/30">
-                                                        <span className="text-[10px] font-semibold text-[#008f7d] uppercase tracking-wider">Featured</span>
-                                                    </div>
-                                                )}
-
-                                                {/* Liquid Hover Blob */}
-                                                <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#008f7d]/10 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                                                <div className="relative z-10 flex flex-col h-full">
-                                                    <div className={`mb-5 inline-flex p-3 rounded-2xl w-fit border transition-all duration-300 origin-left shadow-[0_0_15px_rgba(0,143,125,0.1)]
-                                                        ${service.featured
-                                                            ? 'bg-[#FFF4B7]/10 border-[#FFF4B7]/30 group-hover:bg-[#FFF4B7]/20'
-                                                            : 'bg-[#008f7d]/10 border-[#008f7d]/20 group-hover:bg-[#008f7d]/20 group-hover:border-[#FFF4B7]/30 group-hover:scale-110'
-                                                        }`}>
-                                                        <IconComponent className={`w-7 h-7 transition-colors ${service.featured ? 'text-[#008f7d]' : 'text-[#008f7d] group-hover:text-[#006b5c]'}`} strokeWidth={1.5} />
-                                                    </div>
-
-                                                    <h4 className="text-xl font-semibold text-[#1a1a2e] mb-2 tracking-wide">{service.title}</h4>
-
-                                                    <p className="text-[#4a5568] leading-relaxed text-sm font-normal mb-6 flex-grow group-hover:text-[#1a1a2e] transition-colors">
-                                                        {service.description}
-                                                    </p>
-
-                                                    <div className="flex items-center text-xs font-semibold tracking-wide text-[#008f7d] group-hover:text-[#006b5c] transition-colors">
-                                                        <span className="mr-2">LEARN MORE</span>
-                                                        <div className="w-7 h-7 rounded-full bg-[#008f7d]/10 flex items-center justify-center group-hover:bg-[#008f7d] group-hover:text-white transition-all duration-300">
-                                                            <ArrowRight className="w-3.5 h-3.5 transform group-hover:-rotate-45 transition-transform duration-300" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        )
-                                    })}
-                                </motion.div>
+                                            <div className="marquee-group flex mt-4 mb-4 gap-6" aria-hidden="true">
+                                                {servicesToShow.map((service, idx) => renderCard(service, idx, 'second'))}
+                                            </div>
+                                        </div>
+                                        <style jsx>{`
+                                            .marquee-wrapper { 
+                                                overflow-x: hidden;
+                                                overflow-y: visible;
+                                                position: relative;
+                                            }
+                                            .marquee-track { 
+                                                display: flex; 
+                                                gap: 1.5rem; 
+                                                align-items: stretch; 
+                                                animation: marquee 28s linear infinite; 
+                                                will-change: transform; 
+                                            }
+                                            .marquee-track .marquee-group { 
+                                                display: flex; 
+                                                gap: 1.5rem;
+                                                position: relative;
+                                            }
+                                            .marquee-reverse { 
+                                                animation-direction: reverse; 
+                                            }
+                                            .marquee-wrapper:hover .marquee-track { 
+                                                animation-play-state: paused; 
+                                            }
+                                            @keyframes marquee { 
+                                                from { transform: translateX(0); } 
+                                                to { transform: translateX(-50%); } 
+                                            }
+                                        `}</style>
+                                    </div>
+                                </div>
                             </div>
                         )
                     })}

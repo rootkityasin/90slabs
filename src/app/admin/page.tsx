@@ -92,6 +92,8 @@ interface AboutData {
     paragraphs: string[]
     graphicText: string
     graphicSubtext: string
+    images?: string[]
+    partnerLogos?: string[]
 }
 
 function SortableProjectItem({ project, onEdit, onDelete }: { project: Project; onEdit: (p: Project) => void; onDelete: (id: number) => void }) {
@@ -1082,6 +1084,93 @@ export default function AdminPage() {
                                             onChange={(e) => setAbout({ ...about, graphicSubtext: e.target.value })}
                                             className="w-full px-4 py-3 bg-[#002420] border border-[#008f7d]/30 rounded-xl text-white focus:outline-none focus:border-[#008f7d]"
                                         />
+                                    </div>
+                                </div>
+                                {/* Image carousel assets for hero/shared window */}
+                                <div className="mt-4">
+                                    <label className="block text-sm text-gray-400 mb-2">Shared Window Images (carousel)</label>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {(about.images || []).map((img, idx) => (
+                                            <div key={idx} className="bg-[#002420] p-3 rounded-xl flex flex-col items-start gap-2">
+                                                <img src={img} alt={`img-${idx}`} className="w-full h-28 object-cover rounded-md border border-[#008f7d]/20" />
+                                                <ImageUpload
+                                                    value={img}
+                                                    onChange={(url) => {
+                                                        const next = [...(about.images || [])]
+                                                        next[idx] = url
+                                                        setAbout({ ...about, images: next })
+                                                    }}
+                                                    resolution="flexible"
+                                                    apiKey={apiKey}
+                                                    folder="90sx/hero"
+                                                />
+                                                <div className="w-full flex justify-between">
+                                                    <button
+                                                        onClick={() => {
+                                                            const next = [...(about.images || [])]
+                                                            next.splice(idx, 1)
+                                                            setAbout({ ...about, images: next })
+                                                        }}
+                                                        className="text-sm text-red-400"
+                                                    >Remove</button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {/* Add new image slot */}
+                                        <div className="p-3 rounded-xl border border-dashed border-[#008f7d]/30 flex items-center justify-center">
+                                            <button
+                                                onClick={() => setAbout({ ...about, images: [ ...(about.images || []), '' ] })}
+                                                className="flex items-center gap-2 text-sm text-[#008f7d]"
+                                            >
+                                                <Plus className="w-4 h-4" /> Add Image
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-6">
+                                    <label className="block text-sm text-gray-400 mb-2">Partner Logos (marquee)</label>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        {(about.partnerLogos || []).map((logo, idx) => (
+                                            <div key={idx} className="bg-[#002420] p-3 rounded-xl flex flex-col items-start gap-2">
+                                                {logo ? (
+                                                    <img src={logo} alt={`logo-${idx}`} className="w-full h-20 object-contain rounded-md border border-[#008f7d]/20" />
+                                                ) : (
+                                                    <div className="w-full h-20 flex items-center justify-center rounded-md border border-dashed border-[#008f7d]/30 text-xs text-white/50">
+                                                        Upload logo to preview
+                                                    </div>
+                                                )}
+                                                <ImageUpload
+                                                    value={logo}
+                                                    onChange={(url) => {
+                                                        const next = [...(about.partnerLogos || [])]
+                                                        next[idx] = url
+                                                        setAbout({ ...about, partnerLogos: next })
+                                                    }}
+                                                    resolution="flexible"
+                                                    apiKey={apiKey}
+                                                    folder="90sx/logos"
+                                                />
+                                                <div className="w-full flex justify-between">
+                                                    <button
+                                                        onClick={() => {
+                                                            const next = [...(about.partnerLogos || [])]
+                                                            next.splice(idx, 1)
+                                                            setAbout({ ...about, partnerLogos: next })
+                                                        }}
+                                                        className="text-sm text-red-400"
+                                                    >Remove</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <div className="p-3 rounded-xl border border-dashed border-[#008f7d]/30 flex items-center justify-center">
+                                            <button
+                                                onClick={() => setAbout({ ...about, partnerLogos: [ ...(about.partnerLogos || []), '' ] })}
+                                                className="flex items-center gap-2 text-sm text-[#008f7d]"
+                                            >
+                                                <Plus className="w-4 h-4" /> Add Logo
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <button

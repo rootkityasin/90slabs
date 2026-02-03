@@ -62,6 +62,19 @@ export async function PUT(request: NextRequest) {
             const check = validateInput(body.graphicSubtext, 'string', 50)
             if (check.valid) updateData.graphicSubtext = check.value
         }
+        if (body.images && Array.isArray(body.images)) {
+            // Basic validation: ensure strings and limit count
+            const imgs = body.images
+                .filter((i: unknown) => typeof i === 'string' && i.length > 0)
+                .slice(0, 12) // cap at 12 images
+            updateData.images = imgs
+        }
+        if (body.partnerLogos && Array.isArray(body.partnerLogos)) {
+            const logos = body.partnerLogos
+                .filter((logo: unknown) => typeof logo === 'string' && logo.length > 0)
+                .slice(0, 20)
+            updateData.partnerLogos = logos
+        }
 
         await db.collection('about').updateOne(
             { _id: aboutDoc._id },
