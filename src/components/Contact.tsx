@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -10,6 +10,26 @@ export default function Contact() {
     })
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
     const [errorMessage, setErrorMessage] = useState('')
+
+    const [contactInfo, setContactInfo] = useState({
+        heading: "Ready to make waves?",
+        subheading: "Let's build something extraordinary together. Reach out to us for your next digital venture.",
+        socials: {
+            twitter: '#',
+            instagram: '#',
+            linkedin: '#'
+        },
+        email: 'hello@90sx.agency'
+    })
+
+    useEffect(() => {
+        fetch('/api/contact/info')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.heading) setContactInfo(data)
+            })
+            .catch(err => console.error(err))
+    }, [])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData(prev => ({
@@ -57,11 +77,11 @@ export default function Contact() {
                 <span className="text-[#008f7d] font-mono text-sm tracking-widest uppercase mb-6 block animate-pulse">Start Your Journey</span>
 
                 <h2 className="text-5xl md:text-8xl font-bold mb-10 text-[#1a1a2e] tracking-tighter leading-none max-w-4xl">
-                    Ready to make waves?
+                    {contactInfo.heading}
                 </h2>
 
                 <p className="text-xl md:text-2xl text-[#4a5568] mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-                    Let's build something extraordinary together. Reach out to us for your next digital venture.
+                    {contactInfo.subheading}
                 </p>
 
                 {/* Contact Form */}
@@ -135,9 +155,9 @@ export default function Contact() {
                 <footer className="mt-28 w-full border-t border-[#008f7d]/20 pt-10 flex flex-col md:flex-row justify-between items-center text-[#4a5568] text-sm font-mono">
                     <p>&copy; {new Date().getFullYear()} 90sX Agency.</p>
                     <div className="flex gap-8 mt-4 md:mt-0">
-                        <a href="#" className="hover:text-[#008f7d] transition-colors">Twitter</a>
-                        <a href="#" className="hover:text-[#008f7d] transition-colors">Instagram</a>
-                        <a href="#" className="hover:text-[#008f7d] transition-colors">LinkedIn</a>
+                        <a href={contactInfo.socials.twitter} className="hover:text-[#008f7d] transition-colors">Twitter</a>
+                        <a href={contactInfo.socials.instagram} className="hover:text-[#008f7d] transition-colors">Instagram</a>
+                        <a href={contactInfo.socials.linkedin} className="hover:text-[#008f7d] transition-colors">LinkedIn</a>
                     </div>
                 </footer>
             </div>

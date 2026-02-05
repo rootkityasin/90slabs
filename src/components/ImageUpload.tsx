@@ -142,11 +142,10 @@ export default function ImageUpload({
 
             {value ? (
                 <div className="relative inline-block">
-                    <img
-                        src={value}
-                        alt="Preview"
-                        className="w-24 h-24 object-cover rounded-xl border border-[#008f7d]/30"
-                    />
+                    <div className="w-24 h-24 flex flex-col items-center justify-center bg-[#008f7d]/10 rounded-xl border border-[#008f7d]/30">
+                        <ImageIcon className="w-8 h-8 text-[#008f7d] mb-1" />
+                        <span className="text-[10px] text-[#008f7d]">Uploaded</span>
+                    </div>
                     <button
                         onClick={handleRemove}
                         className="absolute -top-2 -right-2 p-1 bg-red-500 rounded-full text-white hover:bg-red-600 transition-colors"

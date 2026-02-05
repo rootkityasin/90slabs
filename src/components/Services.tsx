@@ -18,24 +18,7 @@ import {
     LucideIcon
 } from 'lucide-react'
 
-interface Service {
-    id: number
-    title: string
-    description: string
-    icon: string
-    featured?: boolean
-}
-
-interface Category {
-    id: string
-    title: string
-    description: string
-    services: Service[]
-}
-
-interface ServicesData {
-    categories: Category[]
-}
+import { Category, Service, ServicesData } from '@/lib/types'
 
 export default function Services() {
     const container = useRef(null)

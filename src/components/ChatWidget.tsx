@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { usePathname } from 'next/navigation'
 
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
@@ -14,6 +15,9 @@ export default function ChatWidget() {
         if (!message.trim()) return
         setMessage('')
     }
+
+    const pathname = usePathname()
+    if (pathname?.startsWith('/admin')) return null
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">

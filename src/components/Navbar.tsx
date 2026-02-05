@@ -76,20 +76,41 @@ export default function Navbar() {
         }
     }
 
-    const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'About', href: '#about' },
-        { name: 'Services', href: '#services' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Members', href: '#members' },
-        { name: 'Contact Us', href: '#contact' },
-    ]
+    const [navData, setNavData] = useState({
+        logo: { text: "90sLabs", image: "" },
+        links: [
+            { name: 'Home', href: '/' },
+            { name: 'About', href: '#about' },
+            { name: 'Services', href: '#services' },
+            { name: 'Projects', href: '#projects' },
+            { name: 'Members', href: '#members' },
+            { name: 'Contact Us', href: '#contact' },
+        ],
+        cta: { text: "Let's Talk", href: "#contact" }
+    })
+
+    useEffect(() => {
+        const fetchNav = async () => {
+            try {
+                const res = await fetch('/api/navbar')
+                if (res.ok) {
+                    const data = await res.json()
+                    if (data && data.links) setNavData(data)
+                }
+            } catch (e) {
+                console.error("Failed to fetch navbar", e)
+            }
+        }
+        fetchNav()
+    }, [])
+
+    const navLinks = navData.links
 
     return (
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled ? 'py-4 bg-[#fafaf7]/90 backdrop-blur-xl border-[#008f7d]/20 shadow-lg' : 'py-8 bg-transparent border-transparent'}`}>
             <div className="container mx-auto px-6 flex items-center justify-between">
                 <Link href="/" className="group relative text-2xl font-bold tracking-tighter text-[#1a1a2e]">
-                    <span className="relative z-10">90sX</span>
+                    <span className="relative z-10">{navData.logo.text}</span>
                     <div className="absolute inset-0 bg-[#008f7d]/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
 
@@ -114,7 +135,7 @@ export default function Navbar() {
                         )
                     })}
                     <Link href="#contact" onClick={(e) => handleNavClick(e as any, '#contact')} className="px-5 py-2 text-sm font-bold bg-[#008f7d] text-white rounded-full hover:bg-[#007a6b] transition-colors shadow-[0_0_15px_rgba(0,143,125,0.3)] hover:shadow-[0_0_20px_rgba(0,143,125,0.5)]">
-                        Let's Talk
+                        {navData.cta.text}
                     </Link>
                 </div>
 
