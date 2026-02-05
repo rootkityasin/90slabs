@@ -172,7 +172,7 @@ export default function HeroAbout() {
     })()
 
     return (
-        <section id="about" ref={containerRef} className="relative h-[200vh] bg-gradient-to-b from-gray-50 to-white">
+        <section id="about" ref={containerRef} className="relative h-[200vh]">
             {/* Background Effects - SIMPLIFIED VERSION */}
             <div
                 aria-hidden="true"
