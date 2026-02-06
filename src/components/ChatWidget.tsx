@@ -10,7 +10,7 @@ export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState<{ role: 'user' | 'model'; content: string }[]>([
-        { role: 'model', content: 'Hello! 👋 **Welcome to 90sLabs**\n\nI can help you with:\n- 🤖 **AI Services**\n- 🌐 **Web Development**\n- 🚀 **Our Projects**\n\nAsk me anything!' }
+        { role: 'model', content: 'Hello!  **Welcome to 90sLabs**\n\nI can help you with:\n- **AI Services**\n- **Web Development**\n- **Our Projects**\n\nAsk me anything!' }
     ])
     const [isLoading, setIsLoading] = useState(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
