@@ -9,7 +9,7 @@ export async function GET() {
     if (!navbarData) {
       // Return default data if not found in DB
       return NextResponse.json({
-        logo: { text: "90sX", image: "" },
+        logo: { text: "90sLabs", image: "" },
         links: [
           { name: "Home", href: "/" },
           { name: "About", href: "#about" },

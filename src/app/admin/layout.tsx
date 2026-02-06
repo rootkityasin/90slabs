@@ -68,7 +68,7 @@ function AdminContent({ children }: { children: React.ReactNode }) {
             {/* Sidebar */}
             <aside className="w-64 bg-white border-r border-gray-200 fixed h-full z-10 hidden md:block">
                 <div className="h-16 flex items-center px-6 border-b border-gray-100">
-                    <span className="text-xl font-bold text-[#008f7d]">90sX Admin</span>
+                    <span className="text-xl font-bold text-[#008f7d]">90sLabs Admin</span>
                 </div>
 
                 <nav className="p-4 space-y-1">
@@ -79,8 +79,8 @@ function AdminContent({ children }: { children: React.ReactNode }) {
                                 key={item.name}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${isActive
-                                        ? 'bg-[#008f7d]/10 text-[#008f7d]'
-                                        : 'text-gray-600 hover:bg-gray-50 hover:text-[#008f7d]'
+                                    ? 'bg-[#008f7d]/10 text-[#008f7d]'
+                                    : 'text-gray-600 hover:bg-gray-50 hover:text-[#008f7d]'
                                     }`}
                             >
                                 <item.icon className="w-5 h-5" />

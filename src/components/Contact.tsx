@@ -153,7 +153,7 @@ export default function Contact() {
                 </form>
 
                 <footer className="mt-28 w-full border-t border-[#008f7d]/20 pt-10 flex flex-col md:flex-row justify-between items-center text-[#4a5568] text-sm font-mono">
-                    <p>&copy; {new Date().getFullYear()} 90sX Agency.</p>
+                    <p>&copy; {new Date().getFullYear()} 90sLabs Agency.</p>
                     <div className="flex gap-8 mt-4 md:mt-0">
                         <a href={contactInfo.socials.twitter} className="hover:text-[#008f7d] transition-colors">Twitter</a>
                         <a href={contactInfo.socials.instagram} className="hover:text-[#008f7d] transition-colors">Instagram</a>

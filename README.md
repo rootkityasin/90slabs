@@ -1,6 +1,6 @@
-# 90sX - Software Agency Portfolio
+# 90sLabs - Software Agency Portfolio
 
-A portfolio website for 90sX software agency built with Next.js and MongoDB Atlas.
+A portfolio website for 90sLabs software agency built with Next.js and MongoDB Atlas.
 
 ## Tech Stack
 
@@ -20,33 +20,39 @@ A portfolio website for 90sX software agency built with Next.js and MongoDB Atla
 ## Setup
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/rootkityasin/90sx.git
 cd 90sx
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Create environment file
+
 ```bash
 cp env.example.txt .env.local
 ```
 
 4. Add your credentials to `.env.local`
+
 ```
 MONGODB_URI=your_mongodb_connection_string
 ADMIN_SECRET_KEY=your_admin_api_key
 ```
 
 5. Seed the database (first time only)
+
 ```bash
 MONGODB_URI="your_connection_string" npx tsx scripts/seed.ts
 ```
 
 6. Run development server
+
 ```bash
 npm run dev
 ```
@@ -80,6 +86,7 @@ src/
 Access at `/admin`. Requires API key set in environment.
 
 Features:
+
 - Manage projects (add/edit/delete)
 - Manage team members with image upload
 - Manage services by category

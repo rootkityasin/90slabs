@@ -74,7 +74,7 @@ export default function AdminLogin() {
                 </form>
 
                 <div className="mt-8 text-center">
-                    <p className="text-xs text-gray-400">Powered by 90sX Agency</p>
+                    <p className="text-xs text-gray-400">Powered by 90sLabs Agency</p>
                 </div>
             </div>
         </div>

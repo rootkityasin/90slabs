@@ -11,7 +11,7 @@ const firaSans = Fira_Sans({
 })
 
 export const metadata: Metadata = {
-  title: '90sX | Software Agency',
+  title: '90sLabs | Software Agency',
   description: 'Premium software development agency.',
 }
 
