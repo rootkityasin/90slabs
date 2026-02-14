@@ -339,7 +339,7 @@ export default function ParticleCanvas() {
             <Canvas
                 camera={{ position: [0, 0, 12], fov: 60 }}
                 gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
-                dpr={[1, 2]}
+                dpr={[1, 1.5]}
             >
                 <Suspense fallback={null}>
                     <MouseTracker onMouseUpdate={handleMouseUpdate} />
