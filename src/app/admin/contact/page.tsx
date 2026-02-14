@@ -58,10 +58,10 @@ export default function AdminContact() {
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-3xl font-bold text-gray-800">Manage Contact Section</h1>
+        <div className="max-w-4xl mx-auto space-y-8 px-4 md:px-0 pb-32">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Manage Contact Section</h1>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-6">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 space-y-6">
                 <h2 className="text-xl font-bold mb-4">Headings & Text</h2>
 
                 <div>
@@ -84,7 +84,7 @@ export default function AdminContact() {
                 </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-6">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 space-y-6">
                 <h2 className="text-xl font-bold mb-4">Contact & Socials</h2>
 
                 <div>
@@ -127,7 +127,7 @@ export default function AdminContact() {
             <button
                 onClick={handleSave}
                 disabled={saving}
-                className="fixed bottom-8 right-8 flex items-center gap-2 bg-[#008f7d] text-white px-6 py-3 rounded-full shadow-xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
+                className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex items-center gap-2 bg-[#008f7d] text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-2xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
             >
                 {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Save Changes

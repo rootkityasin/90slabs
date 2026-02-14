@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm'
 
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState<{ role: 'user' | 'model'; content: string }[]>([
         { role: 'model', content: 'Hello!  **Welcome to 90sLabs**\n\nI can help you with:\n- **AI Services**\n- **Web Development**\n- **Our Projects**\n\nAsk me anything!' }
@@ -26,6 +27,16 @@ export default function ChatWidget() {
             scrollToBottom()
         }
     }, [messages, isOpen])
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 640)
+        }
+
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -92,13 +103,13 @@ export default function ChatWidget() {
                     background: rgba(0, 160, 141, 0.5);
                 }
             `}</style>
-            <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+            <div className="fixed bottom-4 right-2 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-3">
                 <motion.div
                     className="overflow-hidden relative shadow-2xl z-50 backdrop-blur-md border border-indigo-500/10"
                     animate={{
-                        width: isOpen ? 320 : 64,
-                        height: isOpen ? 500 : 64,
-                        borderRadius: isOpen ? 16 : 9999,
+                        width: isOpen ? (isMobile ? 'calc(100vw - 16px)' : 320) : (isMobile ? 56 : 64),
+                        height: isOpen ? (isMobile ? 'min(75vh, 560px)' : 500) : (isMobile ? 56 : 64),
+                        borderRadius: isOpen ? (isMobile ? 14 : 16) : 9999,
                     }}
                     transition={{
                         type: "spring",
@@ -108,7 +119,7 @@ export default function ChatWidget() {
                         duration: 0.4
                     }}
 style={{
-  maxWidth: 'calc(100vw - 48px)',
+    maxWidth: isMobile ? 'calc(100vw - 16px)' : 'calc(100vw - 48px)',
   background: isOpen
     ? '#ffffff'
     : 'radial-gradient(circle at center, #22d3ee 0%, #6366f1 45%, #8b5cf6 100%)'
@@ -139,10 +150,10 @@ style={{
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.1 }}
                             >
-                                <div className="flex items-center justify-between px-4 py-3 border-b border-[#0b1220]/10 bg-white/50 shrink-0">
+                                <div className="flex items-center justify-between px-3 sm:px-4 py-3 border-b border-[#0b1220]/10 bg-white/50 shrink-0">
                                     <div>
                                         <p className="text-sm font-semibold text-[#0b1220]">AI Assistant 🤖</p>
-                                        <p className="text-xs text-[#0b1220]/60 flex items-center gap-1">
+                                        <p className="text-[11px] sm:text-xs text-[#0b1220]/60 flex items-center gap-1">
                                             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                                             Online
                                         </p>
@@ -160,10 +171,10 @@ style={{
                                     </button>
                                 </div>
 
-                                <div className="chat-messages-scroll flex-1 p-4 space-y-4">
+                                <div className="chat-messages-scroll flex-1 p-3 sm:p-4 space-y-3 sm:space-y-4">
                                     {messages.map((msg, idx) => (
                                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                            <div className={`max-w-[85%] p-3 rounded-2xl text-sm shadow-sm ${msg.role === 'user'
+                                            <div className={`max-w-[88%] sm:max-w-[85%] p-2.5 sm:p-3 rounded-2xl text-sm shadow-sm ${msg.role === 'user'
                                                 ? 'bg-[#00a08d] text-white rounded-br-none'
                                                 : 'bg-[#f0f2f5] text-[#0b1220] rounded-bl-none'
                                                 }`}>
@@ -205,7 +216,7 @@ style={{
                                     <div ref={messagesEndRef} />
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="p-3 border-t border-[#0b1220]/10 bg-white/50 shrink-0">
+                                <form onSubmit={handleSubmit} className="p-2.5 sm:p-3 border-t border-[#0b1220]/10 bg-white/50 shrink-0">
                                     <div className="flex gap-2">
                                         <input
                                             value={message}
@@ -216,7 +227,7 @@ style={{
                                         <button
                                             type="submit"
                                             disabled={isLoading || !message.trim()}
-                                            className="rounded-xl bg-[#0b1220] text-white px-4 py-2 text-sm font-semibold hover:bg-[#0b1220]/90 transition-colors disabled:opacity-50"
+                                            className="rounded-xl bg-[#0b1220] text-white px-3 sm:px-4 py-2 text-sm font-semibold hover:bg-[#0b1220]/90 transition-colors disabled:opacity-50"
                                         >
                                             Send
                                         </button>

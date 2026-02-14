@@ -82,13 +82,13 @@ export default function AdminNavbar() {
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-2xl font-bold">Manage Navbar</h1>
+        <div className="max-w-4xl mx-auto space-y-8 px-4 md:px-0 pb-32">
+            <h1 className="text-xl md:text-2xl font-bold">Manage Navbar</h1>
 
             {/* Logo Section */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200">
                 <h2 className="text-lg font-semibold mb-4">Logo</h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm text-gray-500 mb-1">Logo Text</label>
                         <input
@@ -102,7 +102,7 @@ export default function AdminNavbar() {
             </div>
 
             {/* Links Section */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Navigation Links</h2>
                     <button onClick={addLink} className="flex items-center gap-2 text-sm text-[#008f7d] hover:bg-[#008f7d]/5 px-3 py-1.5 rounded-lg transition-colors">
@@ -111,22 +111,22 @@ export default function AdminNavbar() {
                 </div>
                 <div className="space-y-3">
                     {data.links.map((link, idx) => (
-                        <div key={idx} className="flex gap-4 items-center bg-gray-50 p-3 rounded-lg">
+                        <div key={idx} className="flex flex-col md:flex-row gap-4 items-start md:items-center bg-gray-50 p-3 rounded-lg">
                             <input
                                 type="text"
                                 placeholder="Link Name"
                                 value={link.name}
                                 onChange={(e) => updateLink(idx, 'name', e.target.value)}
-                                className="flex-1 p-2 border rounded-md text-sm"
+                                className="w-full md:flex-1 p-2 border rounded-md text-sm"
                             />
                             <input
                                 type="text"
                                 placeholder="Link Href (#section or /path)"
                                 value={link.href}
                                 onChange={(e) => updateLink(idx, 'href', e.target.value)}
-                                className="flex-1 p-2 border rounded-md text-sm font-mono text-gray-600"
+                                className="w-full md:flex-1 p-2 border rounded-md text-sm font-mono text-gray-600"
                             />
-                            <button onClick={() => removeLink(idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
+                            <button onClick={() => removeLink(idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg self-end md:self-auto">
                                 <Trash className="w-4 h-4" />
                             </button>
                         </div>
@@ -135,9 +135,9 @@ export default function AdminNavbar() {
             </div>
 
             {/* CTA Section */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200">
                 <h2 className="text-lg font-semibold mb-4">Call to Action Button</h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm text-gray-500 mb-1">Button Text</label>
                         <input
@@ -162,7 +162,7 @@ export default function AdminNavbar() {
             <button
                 onClick={handleSave}
                 disabled={saving}
-                className="fixed bottom-8 right-8 flex items-center gap-2 bg-[#008f7d] text-white px-6 py-3 rounded-full shadow-xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
+                className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex items-center gap-2 bg-[#008f7d] text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-2xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
             >
                 {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Save Changes

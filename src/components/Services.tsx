@@ -62,8 +62,8 @@ export default function Services() {
 
     if (loading) {
         return (
-            <section id="services" className="py-32 relative bg-[#f5f5f0] overflow-hidden">
-                <div className="container mx-auto px-6 relative z-10">
+            <section id="services" className="py-20 md:py-32 relative bg-[#f5f5f0] overflow-hidden">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10">
                     <div className="flex items-center justify-center min-h-[400px]">
                         <div className="w-12 h-12 border-4 border-[#008f7d]/30 border-t-[#008f7d] rounded-full animate-spin" />
                     </div>
@@ -83,7 +83,7 @@ export default function Services() {
         return (
             <div
                 key={`${prefix}-${service.id}-${idx}`}
-                className={`group relative overflow-hidden rounded-3xl border p-6 h-full min-w-[280px] w-[320px] cursor-pointer transform transition-all duration-500 ease-out hover:z-50
+                className={`group relative overflow-hidden rounded-3xl border p-5 sm:p-6 h-full min-w-[78vw] sm:min-w-[280px] w-[78vw] sm:w-[320px] cursor-pointer transform transition-all duration-500 ease-out hover:z-50
                     ${service.featured
                         ? 'border-[#008f7d]/40 bg-white hover:border-[#008f7d]/60'
                         : 'border-[#008f7d]/20 bg-white/80 hover:border-[#008f7d]/40'
@@ -108,7 +108,7 @@ export default function Services() {
                         <IconComponent className={`w-7 h-7 ${service.featured ? 'text-[#008f7d]' : 'text-[#008f7d]'}`} strokeWidth={1.5} />
                     </div>
 
-                    <h4 className="text-xl font-semibold text-[#1a1a2e] mb-2 tracking-wide">{service.title}</h4>
+                    <h4 className="text-lg sm:text-xl font-semibold text-[#1a1a2e] mb-2 tracking-wide">{service.title}</h4>
 
                     <p className="text-[#4a5568] leading-relaxed text-sm font-normal mb-6 flex-grow">
                         {service.description}
@@ -126,24 +126,24 @@ export default function Services() {
     }
 
     return (
-        <section id="services" ref={container} className="py-32 relative bg-[#f5f5f0] overflow-visible">
+        <section id="services" ref={container} className="py-20 md:py-32 relative bg-[#f5f5f0] overflow-visible">
             {/* Liquid Background Gradients */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#008f7d]/05 rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#008f7d]/08 rounded-full blur-[80px] pointer-events-none" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#008f7d]/03 rounded-full blur-[100px] pointer-events-none" />
 
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="text-center max-w-2xl mx-auto mb-20">
-                    <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-[#1a1a2e] tracking-tight">
+            <div className="container mx-auto px-4 sm:px-6 relative z-10">
+                <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4 md:mb-6 text-[#1a1a2e] tracking-tight">
                         Our Expertise
                     </h2>
-                    <p className="text-[#4a5568] text-xl font-normal leading-relaxed">
+                    <p className="text-[#4a5568] text-base sm:text-lg md:text-xl font-normal leading-relaxed">
                         Comprehensive solutions forged in liquid innovation.
                     </p>
                 </div>
 
                 {/* Categories */}
-                <div className="space-y-20">
+                <div className="space-y-14 md:space-y-20">
                     {categories.map((category, catIdx) => {
                         const CategoryIcon = categoryIconMap[category.id] || Layers
 
@@ -160,22 +160,22 @@ export default function Services() {
                         return (
                             <div key={category.id} className="category-section overflow-visible">
                                 {/* Category Header */}
-                                <div className="flex items-center gap-4 mb-8 pb-4 border-b border-[#008f7d]/20">
-                                    <div className="p-3 rounded-xl bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 border border-[#008f7d]/40 shadow-[0_0_20px_rgba(0,143,125,0.2)]">
+                                <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-8 pb-3 md:pb-4 border-b border-[#008f7d]/20">
+                                    <div className="p-2.5 sm:p-3 rounded-xl bg-gradient-to-br from-[#008f7d]/30 to-[#008f7d]/10 border border-[#008f7d]/40 shadow-[0_0_20px_rgba(0,143,125,0.2)]">
                                         <CategoryIcon className="w-6 h-6 text-[#008f7d]" strokeWidth={1.5} />
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl md:text-3xl font-semibold text-[#1a1a2e] tracking-wide">
+                                        <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#1a1a2e] tracking-wide">
                                             {category.title}
                                         </h3>
-                                        <p className="text-[#4a5568] text-sm mt-1">
+                                        <p className="text-[#4a5568] text-xs sm:text-sm mt-1">
                                             {category.description}
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Service Cards Grid */}
-                                <div className="overflow-visible pt-4 pb-4 -mt-8">
+                                <div className="overflow-visible pt-4 pb-4 -mt-4 md:-mt-8">
                                     <div className="marquee-wrapper">
                                         <div className={`marquee-track ${catIdx % 2 === 1 ? 'marquee-reverse' : ''}`}>
                                             <div className="marquee-group flex mt-4 mb-4 gap-6">
@@ -213,6 +213,22 @@ export default function Services() {
                                             @keyframes marquee { 
                                                 from { transform: translateX(0); } 
                                                 to { transform: translateX(-50%); } 
+                                            }
+                                            @media (max-width: 768px) {
+                                                .marquee-wrapper {
+                                                    overflow-x: auto;
+                                                    scroll-snap-type: x mandatory;
+                                                }
+                                                .marquee-track {
+                                                    animation: none;
+                                                    width: max-content;
+                                                }
+                                                .marquee-track .marquee-group {
+                                                    width: max-content;
+                                                }
+                                                .marquee-group > * {
+                                                    scroll-snap-align: start;
+                                                }
                                             }
                                         `}</style>
                                     </div>

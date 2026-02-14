@@ -91,7 +91,7 @@ export default function HeroAbout() {
 
     // Animation Transforms for Image
     const imageX = useTransform(scrollYProgress, [0, 0.5], ["0%", "-45vw"])
-    const imageScale = useTransform(scrollYProgress, [0, 0.5], [1.1, 1])
+    const imageScale = useTransform(scrollYProgress, [0, 0.], [1.1, 1])
     const imageRotateX = useTransform(scrollYProgress, [0, 0.5], ["0deg", "1deg"])
     const imageRotateY = useTransform(scrollYProgress, [0, 0.5], ["0deg", "2deg"])
     const imageY = useTransform(scrollYProgress, [0, 0.5], ["0%", "-25%"]) // Moved up per user request
@@ -172,7 +172,7 @@ export default function HeroAbout() {
     })()
 
     return (
-        <section id="about" ref={containerRef} className="relative h-[200vh]">
+        <section id="about" ref={containerRef} className="relative h-[230vh] md:h-[200vh] overflow-hidden">
             {/* Background Effects - SIMPLIFIED VERSION */}
             <div
                 aria-hidden="true"
@@ -186,9 +186,9 @@ export default function HeroAbout() {
             {/* Sticky Container for the Image */}
             <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-10">
                 <div className="absolute inset-0">
-                    <div className="container mx-auto h-full flex items-center">
+                    <div className="container mx-auto h-full flex items-center px-4 sm:px-6">
                         {/* Image positioned on right for Hero, moving to left for About */}
-                        <div className="w-full h-full flex justify-end items-center pr-0 md:pr-4">
+                        <div className="w-full h-full flex justify-center lg:justify-end items-center pr-0 lg:pr-4 hidden lg:block">
                             <motion.div
                                 style={{
                                     x: imageX,
@@ -197,7 +197,7 @@ export default function HeroAbout() {
                                     rotateX: imageRotateX,
                                     rotateY: imageRotateY,
                                 }}
-                                className="relative w-[55vw] md:w-[45vw] h-[35vh] md:h-[50vh] rounded-3xl overflow-hidden shadow-2xl shadow-[#008f7d]/20"
+                                className="relative w-[84vw] sm:w-[72vw] md:w-[60vw] lg:w-[45vw] h-[28vh] sm:h-[35vh] md:h-[45vh] lg:h-[50vh] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-[#008f7d]/20"
                             >
                                 {/* Current Image with smooth transition */}
                                 <motion.div
@@ -213,7 +213,7 @@ export default function HeroAbout() {
                                         fill
                                         className="object-cover"
                                         priority
-                                        sizes="(max-width: 768px) 55vw, 45vw"
+                                        sizes="(max-width: 640px) 84vw, (max-width: 768px) 72vw, 45vw"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5" />
                                 </motion.div>
@@ -232,7 +232,7 @@ export default function HeroAbout() {
                                             alt="Next Preview"
                                             fill
                                             className="object-cover"
-                                            sizes="(max-width: 768px) 55vw, 45vw"
+                                            sizes="(max-width: 640px) 84vw, (max-width: 768px) 72vw, 45vw"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5" />
                                     </motion.div>
@@ -246,10 +246,10 @@ export default function HeroAbout() {
             {/* HERO CONTENT SECTION (First 100vh) */}
             <motion.div
                 style={{ opacity: heroTextOpacity, x: heroTextX }}
-                className="absolute top-0 w-full h-screen flex items-center z-20 pointer-events-none"
+                className="absolute top-0 w-full h-screen flex items-start lg:items-center pt-32 lg:pt-0 z-20 pointer-events-none"
             >
-                <div className="container mx-auto px-4 md:px-8">
-                    <div className="max-w-2xl">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-xl md:max-w-3xl lg:max-w-2xl">
                         <motion.div
                             initial={{ opacity: 0, y: 40 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -260,7 +260,7 @@ export default function HeroAbout() {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.4 }}
-                                className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-[1.1] text-gray-900"
+                                className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] text-gray-900"
                             >
                                 <span className="block">Create SaaS</span>
                                 <span className="block bg-gradient-to-r from-[#008f7d] to-[#00a38b] bg-clip-text text-transparent">
@@ -272,27 +272,45 @@ export default function HeroAbout() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6, duration: 0.8 }}
-                                className="text-lg md:text-xl text-gray-600 max-w-xl mb-10 leading-relaxed"
+                                className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-lg mb-8 md:mb-12 leading-relaxed"
                             >
                                 Accelerate product development through flexible, production-ready SaaS architecture enhanced by AI.
                             </motion.p>
+
+                            {/* Mobile/Tablet Image */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.7, duration: 0.8 }}
+                                className="block lg:hidden w-full h-[30vh] md:h-[40vh] relative rounded-2xl overflow-hidden shadow-lg shadow-[#008f7d]/20 mb-8"
+                            >
+                                <Image
+                                    src={currentImage}
+                                    alt="SaaS Dashboard Preview"
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 80vw, 45vw"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/5" />
+                            </motion.div>
 
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.8, duration: 0.8 }}
-                                className="flex flex-col sm:flex-row gap-4"
+                                className="flex flex-col sm:flex-row gap-4 sm:gap-6"
                             >
                                 <Link
                                     href="#contact"
-                                    className="px-8 py-4 bg-gradient-to-r from-[#008f7d] to-[#00a38b] text-white rounded-full text-base md:text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] group relative overflow-hidden"
+                                    className="w-full sm:w-auto text-center px-8 py-4 bg-gradient-to-r from-[#008f7d] to-[#00a38b] text-white rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] group relative overflow-hidden"
                                 >
                                     <span className="relative z-10">Start a Project</span>
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#00a38b] to-[#008f7d] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </Link>
                                 <Link
-                                    href="#work"
-                                    className="px-8 py-4 bg-white text-gray-800 border border-gray-200 rounded-full text-base md:text-lg font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gray-300"
+                                    href="#projects"
+                                    className="w-full sm:w-auto text-center px-8 py-4 bg-white text-gray-800 border border-gray-200 rounded-full text-lg font-bold shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-gray-300"
                                 >
                                     View Our Work
                                 </Link>
@@ -303,18 +321,18 @@ export default function HeroAbout() {
             </motion.div>
 
             {/* ABOUT CONTENT SECTION */}
-            <div className="absolute top-[100vh] w-full h-screen flex items-center z-30">
-                <div className="container mx-auto px-4 md:px-8">
+            <div className="absolute top-[105vh] md:top-[100vh] w-full h-[125vh] md:h-screen flex items-start md:items-center pt-12 md:pt-0 z-30">
+                <div className="container mx-auto px-4 sm:px-6 md:px-8">
                     <section className="relative mx-auto">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
                             {/* Left side - Image placeholder and Logo Cloud */}
-                            <div className="lg:flex flex-col gap-8">
+                            <div className="flex flex-col gap-6 md:gap-8">
                                 {/* This div reserves space for the sticky image */}
-                                <div className="w-full h-[35vh] md:h-[50vh]" />
+                                <div className="w-full h-[24vh] sm:h-[30vh] md:h-[50vh]" />
 
                                 {/* Logo Cloud Section */}
                                 <div className="w-full">
-                                    <h2 className="mb-5 text-center font-medium text-gray-700 text-lg md:text-xl tracking-tight">
+                                    <h2 className="mb-4 md:mb-5 text-center font-medium text-gray-700 text-lg sm:text-xl md:text-2xl tracking-tight">
                                         <span className="text-gray-500">Trusted by experts.</span>
                                         <br />
                                         <span className="font-semibold text-gray-900">Used by the leaders.</span>
@@ -371,7 +389,7 @@ export default function HeroAbout() {
                                 }}
                                 className="relative"
                             >
-                                <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl shadow-[#008f7d]/10 border border-gray-100 relative overflow-hidden group">
+                                <div className="bg-white rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl shadow-[#008f7d]/10 border border-gray-100 relative overflow-hidden group">
                                     <div className="absolute -inset-4 bg-gradient-to-br from-[#008f7d]/5 to-transparent rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#008f7d] to-[#00a38b]" />
 
@@ -382,39 +400,39 @@ export default function HeroAbout() {
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.6 }}
                                         >
-                                            <span className="inline-block px-4 py-2 bg-[#008f7d]/10 rounded-full text-sm font-bold uppercase tracking-widest text-[#008f7d] mb-6">
+                                            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-[#008f7d]/10 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest text-[#008f7d] mb-5 sm:mb-6">
                                                 {aboutContent.graphicText}
                                             </span>
 
-                                            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                                            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-5 sm:mb-6 leading-tight">
                                                 {aboutContent.title.replace(aboutContent.titleHighlight, "")}
                                                 <span className="text-gray-400">{aboutContent.titleHighlight}</span>
                                             </h2>
 
                                             <div className="space-y-6">
                                                 {aboutContent.paragraphs.map((para, idx) => (
-                                                    <p key={idx} className="text-lg text-gray-600 leading-relaxed">
+                                                    <p key={idx} className="text-base md:text-lg text-gray-600 leading-relaxed">
                                                         {para}
                                                     </p>
                                                 ))}
 
                                                 <div className="pt-4">
-                                                    <ul className="grid grid-cols-2 gap-4">
+                                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                                         <li className="flex items-center space-x-2">
                                                             <div className="w-2 h-2 rounded-full bg-[#008f7d]" />
-                                                            <span className="text-gray-700">Scalable Architecture</span>
+                                                            <span className="text-sm sm:text-base text-gray-700">Scalable Architecture</span>
                                                         </li>
                                                         <li className="flex items-center space-x-2">
                                                             <div className="w-2 h-2 rounded-full bg-[#008f7d]" />
-                                                            <span className="text-gray-700">AI Integration</span>
+                                                            <span className="text-sm sm:text-base text-gray-700">AI Integration</span>
                                                         </li>
                                                         <li className="flex items-center space-x-2">
                                                             <div className="w-2 h-2 rounded-full bg-[#008f7d]" />
-                                                            <span className="text-gray-700">Real-time Analytics</span>
+                                                            <span className="text-sm sm:text-base text-gray-700">Real-time Analytics</span>
                                                         </li>
                                                         <li className="flex items-center space-x-2">
                                                             <div className="w-2 h-2 rounded-full bg-[#008f7d]" />
-                                                            <span className="text-gray-700">Security Focused</span>
+                                                            <span className="text-sm sm:text-base text-gray-700">Security Focused</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -422,7 +440,7 @@ export default function HeroAbout() {
                                                 <div className="pt-6">
                                                     <Link
                                                         href="#about"
-                                                        className="inline-flex items-center space-x-2 text-[#008f7d] font-semibold hover:text-[#006b5c] transition-colors duration-300"
+                                                        className="inline-flex items-center space-x-2 text-sm sm:text-base text-[#008f7d] font-semibold hover:text-[#006b5c] transition-colors duration-300"
                                                     >
                                                         <span>Learn more about our approach</span>
                                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +452,7 @@ export default function HeroAbout() {
                                         </motion.div>
                                     </div>
 
-                                    <div className="absolute top-6 right-6 w-12 h-12 border-t-2 border-r-2 border-[#008f7d]/30 rounded-tr-3xl" />
+                                    <div className="absolute hidden md:block top-6 right-6 w-12 h-12 border-t-2 border-r-2 border-[#008f7d]/30 rounded-tr-3xl" />
                                 </div>
                             </motion.div>
                         </div>
@@ -445,7 +463,7 @@ export default function HeroAbout() {
             {/* Scroll indicator */}
             <motion.div
                 style={{ opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]) }}
-                className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none"
+                className="hidden md:block fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 pointer-events-none"
             >
                 <div className="flex flex-col items-center space-y-2">
                     <span className="text-xs font-medium text-gray-400 tracking-widest uppercase">Scroll</span>

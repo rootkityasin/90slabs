@@ -144,15 +144,15 @@ export default function AdminServices() {
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
     return (
-        <div className="max-w-5xl mx-auto space-y-12">
+        <div className="max-w-5xl mx-auto space-y-12 px-4 md:px-0">
             <h1 className="text-3xl font-bold text-gray-800">Manage Services</h1>
 
             {categories.map((category) => (
                 <div key={category.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     {/* Category Header */}
-                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-start">
+                    <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         {editingCategory === category.id ? (
-                            <div className="flex-1 space-y-2 mr-4">
+                            <div className="flex-1 w-full space-y-2 mr-4">
                                 <input
                                     value={catForm.title}
                                     onChange={e => setCatForm({ ...catForm, title: e.target.value })}
@@ -184,7 +184,7 @@ export default function AdminServices() {
 
                         <button
                             onClick={() => createService(category.id)}
-                            className="bg-[#008f7d] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#007a6b] flex items-center gap-2"
+                            className="bg-[#008f7d] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#007a6b] flex items-center gap-2 w-full md:w-auto justify-center"
                         >
                             <Plus className="w-4 h-4" /> Add Service
                         </button>

@@ -97,13 +97,13 @@ export default function AdminHero() {
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8 pb-20">
-            <h1 className="text-3xl font-bold text-gray-800">Manage Hero & About</h1>
+        <div className="max-w-5xl mx-auto space-y-8 pb-32 px-4 md:px-0">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Manage Hero & About</h1>
 
             {/* Text Content */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-6">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 space-y-6">
                 <h2 className="text-xl font-bold mb-4">Text Content</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Label (Small Text)</label>
                         <input
@@ -164,7 +164,7 @@ export default function AdminHero() {
             </div>
 
             {/* Images */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-6">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 space-y-6">
                 <h2 className="text-xl font-bold mb-4">Hero Images</h2>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Upload New Image</label>
@@ -173,16 +173,16 @@ export default function AdminHero() {
                         resolution="1920x1080"
                         aspectRatio="16:9"
                         apiKey="admin"
-                        value="" // Reset after upload handled by onChange if component supports it, or just use as trigger
+                        value=""
                     />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     {data.images.map((img, idx) => (
                         <div key={idx} className="relative group aspect-video bg-gray-100 rounded-lg overflow-hidden">
                             <img src={img} alt="Hero" className="w-full h-full object-cover" />
                             <button
                                 onClick={() => removeImage(idx)}
-                                className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 <Trash className="w-3 h-3" />
                             </button>
@@ -192,7 +192,7 @@ export default function AdminHero() {
             </div>
 
             {/* Partner Logos */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-6">
+            <div className="bg-white p-4 md:p-6 rounded-xl border border-gray-200 space-y-6">
                 <h2 className="text-xl font-bold mb-4">Partner Logos</h2>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Upload Logo</label>
@@ -210,7 +210,7 @@ export default function AdminHero() {
                             <img src={logo} alt="Partner" className="max-w-full max-h-full object-contain" />
                             <button
                                 onClick={() => removeLogo(idx)}
-                                className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 <Trash className="w-3 h-3" />
                             </button>
@@ -222,7 +222,7 @@ export default function AdminHero() {
             <button
                 onClick={handleSave}
                 disabled={saving}
-                className="fixed bottom-8 right-8 flex items-center gap-2 bg-[#008f7d] text-white px-6 py-3 rounded-full shadow-xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
+                className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex items-center gap-2 bg-[#008f7d] text-white text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 rounded-full shadow-2xl hover:bg-[#007a6b] transition-all disabled:opacity-50"
             >
                 {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                 Save Changes

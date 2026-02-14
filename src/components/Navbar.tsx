@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
+import { Menu, X } from 'lucide-react'
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
@@ -104,17 +105,39 @@ export default function Navbar() {
         fetchNav()
     }, [])
 
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden'
+            document.documentElement.style.overflow = 'hidden'
+        } else {
+            document.body.style.overflow = ''
+            document.documentElement.style.overflow = ''
+        }
+        return () => {
+            document.body.style.overflow = ''
+            document.documentElement.style.overflow = ''
+        }
+    }, [isMobileMenuOpen])
+
+    // Close mobile menu when route changes
+    useEffect(() => {
+        setIsMobileMenuOpen(false)
+    }, [active])
+
     const navLinks = navData.links
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled ? 'py-4 bg-[#fafaf7]/90 backdrop-blur-xl border-[#008f7d]/20 shadow-lg' : 'py-8 bg-transparent border-transparent'}`}>
-            <div className="container mx-auto px-6 flex items-center justify-between">
-                <Link href="/" className="group relative text-2xl font-bold tracking-tighter text-[#1a1a2e]">
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${scrolled ? 'py-3 md:py-4 bg-[#fafaf7]/90 backdrop-blur-xl border-[#008f7d]/20 shadow-lg' : 'py-4 md:py-8 bg-transparent border-transparent'}`}>
+            <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
+                <Link href="/" className="group relative text-xl sm:text-2xl font-bold tracking-tighter text-[#1a1a2e]">
                     <span className="relative z-10">{navData.logo.text}</span>
                     <div className="absolute inset-0 bg-[#008f7d]/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
 
-                <div className="hidden md:flex items-center space-x-8">
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
                     {navLinks.map((link) => {
                         const key = link.href.startsWith('#') ? link.href.slice(1) : (link.href === '/' ? 'home' : link.href)
                         const isActive = active === key
@@ -139,12 +162,63 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button Placeholder */}
-                <div className="md:hidden">
-                    <button className="text-[#1a1a2e] p-2">
-                        <div className="w-6 h-0.5 bg-[#008f7d] mb-1.5"></div>
-                        <div className="w-6 h-0.5 bg-[#008f7d]"></div>
+                {/* Mobile Menu Button - High Visibility with Z-Index tweak */}
+                <div className="md:hidden z-[60] relative">
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="text-black p-2 focus:outline-none hover:bg-black/5 rounded-full transition-colors"
+                        aria-label="Toggle menu"
+                    >
+                        {isMobileMenuOpen ? (
+                            <X className="w-7 h-7" strokeWidth={2.5} />
+                        ) : (
+                            <Menu className="w-7 h-7" strokeWidth={2.5} />
+                        )}
                     </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu Backdrop & Drawer */}
+            <div className={`fixed inset-0 h-[100dvh] z-40 md:hidden transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                {/* Backdrop */}
+                <div
+                    className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+
+                {/* Drawer */}
+                <div className={`absolute top-0 right-0 h-full w-[75vw] sm:w-[400px] bg-[#fafaf7] shadow-2xl flex flex-col items-start justify-start pt-24 pb-10 px-8 space-y-6 overflow-y-auto transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                    {navLinks.map((link) => {
+                        const key = link.href.startsWith('#') ? link.href.slice(1) : (link.href === '/' ? 'home' : link.href)
+                        const isActive = active === key
+
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                onClick={(e) => {
+                                    handleNavClick(e as any, link.href)
+                                    setIsMobileMenuOpen(false)
+                                }}
+                                className={cn(
+                                    'text-xl font-bold transition-colors w-full border-b border-[#008f7d]/10 pb-4',
+                                    isActive ? 'text-[#008f7d]' : 'text-[#4a5568]'
+                                )}
+                            >
+                                {link.name}
+                            </Link>
+                        )
+                    })}
+                    <Link
+                        href="#contact"
+                        onClick={(e) => {
+                            handleNavClick(e as any, '#contact')
+                            setIsMobileMenuOpen(false)
+                        }}
+                        className="mt-4 w-full text-center px-8 py-3.5 text-base font-bold bg-[#008f7d] text-white rounded-full hover:bg-[#007a6b] transition-colors shadow-lg"
+                    >
+                        {navData.cta.text}
+                    </Link>
                 </div>
             </div>
         </nav>

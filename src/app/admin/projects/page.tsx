@@ -100,18 +100,18 @@ export default function AdminProjects() {
     if (loading) return <div className="p-10 text-center">Loading...</div>
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8">
-            <div className="flex justify-between items-center">
+        <div className="max-w-5xl mx-auto space-y-8 px-4 md:px-0 pb-12">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <h1 className="text-3xl font-bold text-gray-800">Manage Projects</h1>
                 {!editingId && (
-                    <button onClick={startCreate} className="bg-[#008f7d] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#007a6b]">
+                    <button onClick={startCreate} className="bg-[#008f7d] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#007a6b] w-full md:w-auto justify-center">
                         <Plus className="w-4 h-4" /> Add Project
                     </button>
                 )}
             </div>
 
             {editingId !== null && (
-                <div className="bg-white p-6 rounded-xl border border-[#008f7d]/30 shadow-lg mb-8">
+                <div className="bg-white p-4 md:p-6 rounded-xl border border-[#008f7d]/30 shadow-lg mb-8">
                     <h2 className="text-xl font-bold mb-4">{editingId === 0 ? 'New Project' : 'Edit Project'}</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">
@@ -177,13 +177,13 @@ export default function AdminProjects() {
                                 onChange={(url) => setFormData({ ...formData, image: url })}
                                 resolution="1920x1080"
                                 aspectRatio="16:9"
-                                apiKey="admin" // In a real app, verify this mechanism
+                                apiKey="admin"
                             />
                         </div>
                     </div>
-                    <div className="flex justify-end gap-3 mt-6">
-                        <button onClick={cancelEdit} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
-                        <button onClick={handleSave} className="px-6 py-2 bg-[#008f7d] text-white rounded hover:bg-[#007a6b] flex items-center gap-2">
+                    <div className="flex flex-col md:flex-row justify-end gap-3 mt-6">
+                        <button onClick={cancelEdit} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded order-2 md:order-1">Cancel</button>
+                        <button onClick={handleSave} className="px-6 py-2 bg-[#008f7d] text-white rounded hover:bg-[#007a6b] flex items-center justify-center gap-2 order-1 md:order-2">
                             <Save className="w-4 h-4" /> Save Project
                         </button>
                     </div>
